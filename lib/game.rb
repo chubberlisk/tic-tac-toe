@@ -1,5 +1,5 @@
 class Game
-  attr_reader :grid
+  attr_accessor :grid
 
   def initialize(grid)
     @grid = grid

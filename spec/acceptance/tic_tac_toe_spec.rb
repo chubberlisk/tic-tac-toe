@@ -26,4 +26,20 @@ describe 'Tic Tac Toe' do
       ]
     )
   end
+
+  it 'can place an X marker in a position on the grid' do
+    game_gateway = InMemoryGameGateway.new
+    place_x_marker = PlaceXMarker.new(game_gateway)
+    view_game = ViewGame.new(game_gateway)
+
+    place_x_marker.execute([0, 0])
+
+    expect(view_game.execute.grid).to eq(
+      [
+        [:x, nil, nil],
+        [nil, nil, nil],
+        [nil, nil, nil]
+      ]
+    )
+  end
 end

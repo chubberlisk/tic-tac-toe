@@ -1,33 +1,29 @@
 # frozen_string_literal: true
+require_relative  '../../lib/start_new_game'
+require_relative  '../../lib/view_game'
 
 describe 'Tic Tac Toe' do
-  class InMemoryGridGateway
+  class InMemoryGameGateway
+    attr_reader :saved_game
+
+    def save(game)
+      @saved_game = game
+    end
   end
 
-  it 'can view a grid' do
-    grid = {
-      row_one: [nil, nil, nil],
-      row_two: [nil, nil, nil],
-      row_three: [nil, nil, nil]
-    }
+  it 'can start a new game' do
+    game_gateway = InMemoryGameGateway.new
+    start_new_game = StartNewGame.new(game_gateway)
+    view_game = ViewGame.new(game_gateway)
 
-    grid_gateway = InMemoryGridGateway.new
-    save_grid = SaveGrid.new(grid_gateway: grid_gateway)
-    view_grid = ViewGrid.new(grid_gateway: grid_gateway)
+    start_new_game.execute
 
-    response = save_grid.execute(grid)
-
-    view_grid_response = view_grid.execute(id: response[:id])
-
-    expect(view_grid_response).to eq(
-      {
-        id: response[:id],
-        grid: {
-          row_one: [nil, nil, nil],
-          row_two: [nil, nil, nil],
-          row_three: [nil, nil, nil]
-        }
-      }
+    expect(view_game.execute.grid).to eq(
+      [
+        [nil, nil, nil],
+        [nil, nil, nil],
+        [nil, nil, nil]
+      ]
     )
   end
 end

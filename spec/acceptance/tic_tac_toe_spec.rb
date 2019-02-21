@@ -2,6 +2,8 @@
 require_relative '../../lib/start_new_game'
 require_relative '../../lib/view_game'
 require_relative '../../lib/place_marker'
+require_relative '../../lib/win_horizontal_game'
+
 
 describe 'Tic Tac Toe' do
   class InMemoryGameGateway
@@ -92,5 +94,24 @@ describe 'Tic Tac Toe' do
         ]
       )
     end
+    it 'can win a game when player X has 3 in a row horizontally in the first row' do
+      win_horizontal_game = WinHorizontalGame.new(game_gateway)
+
+      place_x_marker.execute([0, 0])
+      place_o_marker.execute([1, 0])
+      place_x_marker.execute([0, 1])
+      place_o_marker.execute([1, 1])
+      place_x_marker.execute([0, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:x, :x, :x],
+          [:o, :o, nil],
+          [nil, nil, nil]
+        ]
+      )
+      expect(win_horizontal_game.execute).to eq('Player X has won the game!')
+    end
   end
+
 end

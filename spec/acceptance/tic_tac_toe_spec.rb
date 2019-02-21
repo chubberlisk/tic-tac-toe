@@ -98,4 +98,38 @@ describe 'Tic Tac Toe' do
       ]
     )
   end
+
+  it 'cannot place a marker in a position that already has a marker' do
+    game_gateway = InMemoryGameGateway.new
+    place_x_marker = PlaceMarker.new(game_gateway, :x)
+    place_o_marker = PlaceMarker.new(game_gateway, :o)
+    view_game = ViewGame.new(game_gateway)
+    game_gateway.saved_game = Game.new(
+      [
+        [nil, nil, nil],
+        [nil, nil, nil],
+        [nil, nil, nil]
+      ]
+    )
+
+    place_x_marker.execute([2, 1])
+
+    expect(view_game.execute.grid).to eq(
+      [
+        [nil, nil, nil],
+        [nil, nil, nil],
+        [nil, :x, nil]
+      ]
+    )
+
+    expect { place_o_marker.execute([2, 1]) }.to raise_error(InvalidMoveError)
+
+    expect(view_game.execute.grid).to eq(
+      [
+        [nil, nil, nil],
+        [nil, nil, nil],
+        [nil, :x, nil]
+      ]
+    )
+  end
 end

@@ -1,7 +1,7 @@
 require_relative '../../lib/win_horizontal_game'
 require_relative '../../lib/game'
 
-describe WinHorizontalGame do\
+describe WinHorizontalGame do
 
   class GameGatewayStub
     attr_writer :saved_game

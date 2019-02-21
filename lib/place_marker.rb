@@ -1,7 +1,7 @@
-class InvalidMoveError < RuntimeError
-end
-
 class PlaceMarker
+  class InvalidMoveError < RuntimeError
+  end
+
   attr_reader :grid
 
   def initialize(game_gateway, marker)

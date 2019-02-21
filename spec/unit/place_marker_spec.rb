@@ -66,22 +66,22 @@ describe PlaceMarker do
   context 'raise error' do
     it 'can raise an error when a O marker is placed at (2, 1) on a taken position' do
       place_x_marker.execute([2, 1])
-      expect { place_o_marker.execute([2, 1]) }.to raise_error(InvalidMoveError)
+      expect { place_o_marker.execute([2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when a O marker is placed at (2, 2) on a taken position' do
       place_x_marker.execute([2, 2])
-      expect { place_o_marker.execute([2, 2]) }.to raise_error(InvalidMoveError)
+      expect { place_o_marker.execute([2, 2]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when an X marker is placed at (0, 1) on a taken position' do
       place_o_marker.execute([0, 1])
-      expect { place_x_marker.execute([0, 1]) }.to raise_error(InvalidMoveError)
+      expect { place_x_marker.execute([0, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when an X marker is placed at (1, 1) on a taken position' do
       place_o_marker.execute([1, 1])
-      expect { place_x_marker.execute([1, 1]) }.to raise_error(InvalidMoveError)
+      expect { place_x_marker.execute([1, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
   end
 end

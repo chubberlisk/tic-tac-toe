@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative  '../../lib/start_new_game'
+require_relative '../../lib/start_new_game'
 require_relative '../../lib/view_game'
 require_relative '../../lib/place_marker'
 

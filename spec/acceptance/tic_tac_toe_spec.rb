@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 require_relative  '../../lib/start_new_game'
 require_relative '../../lib/view_game'
-require_relative '../../lib/place_x_marker'
-require_relative '../../lib/place_o_marker'
+require_relative '../../lib/place_marker'
 
 describe 'Tic Tac Toe' do
   class InMemoryGameGateway
@@ -31,7 +30,7 @@ describe 'Tic Tac Toe' do
 
   it 'can place an X marker in a position on the grid' do
     game_gateway = InMemoryGameGateway.new
-    place_x_marker = PlaceXMarker.new(game_gateway)
+    place_x_marker = PlaceMarker.new(game_gateway, :x)
     view_game = ViewGame.new(game_gateway)
     game_gateway.saved_game = Game.new(
       [
@@ -54,7 +53,7 @@ describe 'Tic Tac Toe' do
 
   it 'can place an O marker in a position on the grid' do
     game_gateway = InMemoryGameGateway.new
-    place_o_marker = PlaceOMarker.new(game_gateway)
+    place_o_marker = PlaceMarker.new(game_gateway, :o)
     view_game = ViewGame.new(game_gateway)
     game_gateway.saved_game = Game.new(
       [

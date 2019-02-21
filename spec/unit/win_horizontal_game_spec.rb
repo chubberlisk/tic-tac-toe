@@ -2,7 +2,6 @@ require_relative '../../lib/win_horizontal_game'
 require_relative '../../lib/game'
 
 describe WinHorizontalGame do
-
   class GameGatewayStub
     attr_writer :saved_game
   end
@@ -19,5 +18,4 @@ describe WinHorizontalGame do
     )
     expect(win_horizontal_game.execute).to eq('Player X has won the game!')
   end
-
 end

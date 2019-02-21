@@ -10,40 +10,26 @@ describe PlaceXMarker do
     end
   end
 
-  it 'can retrieve the grid' do
-    game_gateway = GameGatewayStubAndSpy.new
-    place_x_marker = PlaceXMarker.new(game_gateway)
+  let(:game_gateway) { GameGatewayStubAndSpy.new }
+  let(:place_x_marker) { PlaceXMarker.new(game_gateway) }
+  let(:empty_grid) do
+    [
+      [nil, nil, nil],
+      [nil, nil, nil],
+      [nil, nil, nil]
+    ]
+  end
 
-    game_gateway.saved_game = Game.new(
-      [
-        [nil, nil, nil],
-        [nil, nil, nil],
-        [nil, nil, nil]
-      ]
-    )
+  it 'can retrieve the grid' do
+    game_gateway.saved_game = Game.new(empty_grid)
 
     place_x_marker.execute(nil)
 
-    expect(place_x_marker.grid).to eq(
-      [
-        [nil, nil, nil],
-        [nil, nil, nil],
-        [nil, nil, nil]
-      ]
-    )
+    expect(place_x_marker.grid).to eq(empty_grid)
   end
 
   it 'can place X marker at (0, 0) on the grid' do
-    game_gateway = GameGatewayStubAndSpy.new
-    place_x_marker = PlaceXMarker.new(game_gateway)
-
-    game_gateway.saved_game = Game.new(
-      [
-        [nil, nil, nil],
-        [nil, nil, nil],
-        [nil, nil, nil]
-      ]
-    )
+    game_gateway.saved_game = Game.new(empty_grid)
 
     place_x_marker.execute([0, 0])
 
@@ -52,6 +38,20 @@ describe PlaceXMarker do
         [:x, nil, nil],
         [nil, nil, nil],
         [nil, nil, nil]
+      ]
+    )
+  end
+
+  it 'can place X marker at (2, 1) on the grid' do
+    game_gateway.saved_game = Game.new(empty_grid)
+
+    place_x_marker.execute([2, 1])
+
+    expect(game_gateway.saved_game.grid).to eq(
+      [
+        [nil, nil, nil],
+        [nil, nil, nil],
+        [nil, :x, nil]
       ]
     )
   end

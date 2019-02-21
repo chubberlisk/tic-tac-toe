@@ -6,11 +6,12 @@ class PlaceXMarker
   end
 
   def execute(position)
-    @game = @game_gateway.saved_game
-    @grid = @game.grid
-    return nil if position.nil?
+    @grid = @game_gateway.saved_game.grid
+    return if position.nil?
+
     @grid[position[0]][position[1]] = :x
-    @game.grid = @grid
-    @game_gateway.saved_game = @game
+
+    game = Game.new(@grid)
+    @game_gateway.save(game)
   end
 end

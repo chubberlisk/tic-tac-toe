@@ -18,7 +18,7 @@ describe WinHorizontalGame do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player X has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do 
@@ -29,7 +29,7 @@ describe WinHorizontalGame do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player X has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the last row' do 
@@ -40,7 +40,7 @@ describe WinHorizontalGame do
           [:x, :x, :x]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player X has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_x_win)
     end
   end
 
@@ -53,7 +53,7 @@ describe WinHorizontalGame do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player O has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the second row' do 
@@ -64,7 +64,7 @@ describe WinHorizontalGame do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player O has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the third row' do 
@@ -75,7 +75,7 @@ describe WinHorizontalGame do
           [:o, :o, :o]
         ]
       )
-      expect(win_horizontal_game.execute).to eq('Player O has won the game!')
+      expect(win_horizontal_game.execute).to eq(:player_o_win)
     end
   end
 
@@ -87,6 +87,6 @@ describe WinHorizontalGame do
         [nil, nil, nil]
       ]
     )
-    expect(win_horizontal_game.execute).to eq('No horizontal win.')
+    expect(win_horizontal_game.execute).to eq(:no_win)
   end
 end

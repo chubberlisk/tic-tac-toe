@@ -1,6 +1,5 @@
 class PlaceMarker
-  class InvalidMoveError < RuntimeError
-  end
+  InvalidMoveError = Class.new(RuntimeError)
 
   def initialize(game_gateway)
     @game_gateway = game_gateway

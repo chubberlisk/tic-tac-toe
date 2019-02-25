@@ -6,16 +6,13 @@ class Game
   end
 
   def horizontal_win
-    winner ? "Player #{winner} has won the game!" : 'No horizontal win.'
+    return :player_x_win if win?(:x)
+    return :player_o_win if win?(:o)
+
+    :no_win
   end
 
   private
-
-  def winner
-    return 'X' if win?(:x)
-
-    'O' if win?(:o)
-  end
 
   def win?(marker)
     @grid[0][0..2].all?(marker) || @grid[1][0..2].all?(marker)\

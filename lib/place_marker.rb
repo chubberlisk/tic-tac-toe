@@ -20,6 +20,6 @@ class PlaceMarker
   private
 
   def already_taken?(grid, position)
-    !grid[position[0]][position[1]].nil?
+    grid[position[0]][position[1]]
   end
 end

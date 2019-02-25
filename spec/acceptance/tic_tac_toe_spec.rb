@@ -17,8 +17,8 @@ describe 'Tic Tac Toe' do
   let(:game_gateway) { InMemoryGameGateway.new }
   let(:start_new_game) { StartNewGame.new(game_gateway) }
   let(:view_game) { ViewGame.new(game_gateway) }
-  let(:place_x_marker) { PlaceMarker.new(game_gateway, :x) }
-  let(:place_o_marker) { PlaceMarker.new(game_gateway, :o) }
+  let(:place_x_marker) { PlaceMarker.new(game_gateway) }
+  let(:place_o_marker) { PlaceMarker.new(game_gateway) }
   let(:empty_grid) do
     [
       [nil, nil, nil],
@@ -37,7 +37,7 @@ describe 'Tic Tac Toe' do
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
     it 'can place an X marker in a position on the grid' do
-      place_x_marker.execute([0, 0])
+      place_x_marker.execute(:x, [0, 0])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -49,7 +49,7 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can place an O marker in a position on the grid' do
-      place_o_marker.execute([2, 2])
+      place_o_marker.execute(:o, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -61,8 +61,8 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can place an X and O marker in a position on the grid' do
-      place_x_marker.execute([0, 2])
-      place_o_marker.execute([1, 1])
+      place_x_marker.execute(:x, [0, 2])
+      place_o_marker.execute(:o, [1, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -74,7 +74,7 @@ describe 'Tic Tac Toe' do
     end
 
     it 'cannot place a marker in a position that already has a marker' do
-      place_x_marker.execute([2, 1])
+      place_x_marker.execute(:x, [2, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -84,7 +84,7 @@ describe 'Tic Tac Toe' do
         ]
       )
 
-      expect { place_o_marker.execute([2, 1]) }.to raise_error(InvalidMoveError)
+      expect { place_o_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
 
       expect(view_game.execute.grid).to eq(
         [
@@ -97,11 +97,11 @@ describe 'Tic Tac Toe' do
     it 'can win a game when player X has 3 in a row horizontally in the first row' do
       win_horizontal_game = WinHorizontalGame.new(game_gateway)
 
-      place_x_marker.execute([0, 0])
-      place_o_marker.execute([1, 0])
-      place_x_marker.execute([0, 1])
-      place_o_marker.execute([1, 1])
-      place_x_marker.execute([0, 2])
+      place_x_marker.execute(:x, [0, 0])
+      place_o_marker.execute(:o, [1, 0])
+      place_x_marker.execute(:x, [0, 1])
+      place_o_marker.execute(:o, [1, 1])
+      place_x_marker.execute(:x, [0, 2])
 
       expect(view_game.execute.grid).to eq(
         [

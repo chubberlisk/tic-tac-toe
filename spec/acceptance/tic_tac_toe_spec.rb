@@ -94,12 +94,13 @@ describe 'Tic Tac Toe' do
     end
   end
 
-  context 'when Player X wins horizontally' do
+  context 'when a player wins horizontally' do
+    let(:win_horizontal_game) { WinHorizontalGame.new(game_gateway) }
+
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
-    it 'can win a game when player X has 3 in a row horizontally in the first row' do
-      win_horizontal_game = WinHorizontalGame.new(game_gateway)
 
+    it 'can win a game when player X has 3 in a row horizontally in the first row' do
       place_x_marker.execute(:x, [0, 0])
       place_o_marker.execute(:o, [1, 0])
       place_x_marker.execute(:x, [0, 1])
@@ -117,8 +118,6 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do
-      win_horizontal_game = WinHorizontalGame.new(game_gateway)
-
       place_x_marker.execute(:x, [1, 0])
       place_o_marker.execute(:o, [0, 0])
       place_x_marker.execute(:x, [1, 1])
@@ -136,8 +135,6 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the third row' do
-      win_horizontal_game = WinHorizontalGame.new(game_gateway)
-
       place_x_marker.execute(:x, [2, 0])
       place_o_marker.execute(:o, [0, 0])
       place_x_marker.execute(:x, [2, 1])
@@ -153,12 +150,6 @@ describe 'Tic Tac Toe' do
       )
       expect(win_horizontal_game.execute).to eq('Player X has won the game!')
     end
-  end
-
-  context 'when Player O wins horizontally' do
-    let(:win_horizontal_game) { WinHorizontalGame.new(game_gateway) }
-
-    before { game_gateway.saved_game = Game.new(empty_grid) }
 
     it 'can win a game when player O has 3 in a row horizontally in the first row' do
       place_x_marker.execute(:o, [0, 0])
@@ -177,7 +168,7 @@ describe 'Tic Tac Toe' do
       expect(win_horizontal_game.execute).to eq('Player O has won the game!')
     end
 
-    it 'can win a game when player X has 3 in a row horizontally in the second row' do
+    it 'can win a game when player O has 3 in a row horizontally in the second row' do
       place_x_marker.execute(:x, [1, 0])
       place_o_marker.execute(:o, [0, 0])
       place_x_marker.execute(:x, [1, 1])
@@ -194,7 +185,7 @@ describe 'Tic Tac Toe' do
       expect(win_horizontal_game.execute).to eq('Player X has won the game!')
     end
 
-    it 'can win a game when player X has 3 in a row horizontally in the third row' do
+    it 'can win a game when player O has 3 in a row horizontally in the third row' do
       place_x_marker.execute(:x, [2, 0])
       place_o_marker.execute(:o, [0, 0])
       place_x_marker.execute(:x, [2, 1])

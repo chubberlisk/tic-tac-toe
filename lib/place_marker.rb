@@ -1,3 +1,6 @@
+class InvalidMoveError < RuntimeError
+end
+
 class PlaceMarker
   attr_reader :grid
 
@@ -10,9 +13,17 @@ class PlaceMarker
     @grid = @game_gateway.saved_game.grid
     return if position.nil?
 
+    raise InvalidMoveError if already_taken?(position)
+
     @grid[position[0]][position[1]] = @marker
 
     game = Game.new(@grid)
     @game_gateway.save(game)
+  end
+
+  private
+
+  def already_taken?(position)
+    !@grid[position[0]][position[1]].nil?
   end
 end

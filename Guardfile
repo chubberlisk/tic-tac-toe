@@ -69,4 +69,9 @@ guard :rspec, cmd: 'bundle exec rspec --format documentation' do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
     Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance'
   end
+
+  lib_files = %w[start_new_game view_game place_marker win_horizontal_game]
+  lib_files.each do |lib_file|
+    watch("lib/#{lib_file}.rb") { "spec/unit/#{lib_file}_spec.rb" }
+  end
 end

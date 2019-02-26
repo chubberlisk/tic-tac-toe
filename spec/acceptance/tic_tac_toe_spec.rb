@@ -218,4 +218,129 @@ describe 'Tic Tac Toe' do
       expect(win_horizontal_game.execute).to eq(:no_win)
     end
   end
+
+  context 'when a player wins vertically' do
+    let(:win_vertical_game) { WinVerticalGame.new(game_gateway) }
+
+    before { game_gateway.saved_game = Game.new(empty_grid) }
+
+    it 'can win a game when player X has 3 in a row vertically in the first column' do
+      place_x_marker.execute(:x, [0, 0])
+      place_o_marker.execute(:o, [0, 1])
+      place_x_marker.execute(:x, [1, 0])
+      place_o_marker.execute(:o, [0, 2])
+      place_x_marker.execute(:x, [2, 0])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:x, :o, :o],
+          [:x, nil, nil],
+          [:x, nil, nil]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player X has 3 in a row vertically in the second column' do
+      place_x_marker.execute(:x, [0, 1])
+      place_o_marker.execute(:o, [1, 0])
+      place_x_marker.execute(:x, [1, 1])
+      place_o_marker.execute(:o, [2, 0])
+      place_x_marker.execute(:x, [2, 1])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, :x, nil],
+          [:o, :x, nil],
+          [:o, :x, nil]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player X has 3 in a row vertically in the third column' do
+      place_x_marker.execute(:x, [0, 2])
+      place_o_marker.execute(:o, [0, 1])
+      place_x_marker.execute(:x, [1, 2])
+      place_o_marker.execute(:o, [2, 0])
+      place_x_marker.execute(:x, [2, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, :o, :x],
+          [nil, nil, :x],
+          [:o, nil, :x]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player O has 3 in a row horizontally in the first column' do
+      place_x_marker.execute(:o, [0, 0])
+      place_o_marker.execute(:x, [0, 1])
+      place_x_marker.execute(:o, [1, 0])
+      place_o_marker.execute(:x, [2, 1])
+      place_x_marker.execute(:o, [2, 0])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:o, :x, nil],
+          [:o, nil, nil],
+          [:o, :x, nil]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_o_win)
+    end
+
+    it 'can win a game when player O has 3 in a row vertically in the second column' do
+      place_x_marker.execute(:o, [0, 1])
+      place_o_marker.execute(:x, [1, 0])
+      place_x_marker.execute(:o, [1, 1])
+      place_o_marker.execute(:x, [1, 2])
+      place_x_marker.execute(:o, [2, 1])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, :o, nil],
+          [:x, :o, :x],
+          [nil, :o, nil]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_o_win)
+    end
+
+    it 'can win a game when player O has 3 in a row vertically in the third column' do
+      place_o_marker.execute(:o, [0, 2])
+      place_x_marker.execute(:x, [0, 1])
+      place_o_marker.execute(:o, [1, 2])
+      place_x_marker.execute(:x, [2, 0])
+      place_o_marker.execute(:o, [2, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, :x, :o],
+          [nil, nil, :o],
+          [:x, nil, :o]
+        ]
+      )
+      expect(win_vertical_game.execute).to eq(:player_o_win)
+    end
+
+    it 'can recognise when there is no vertical win' do
+      place_o_marker.execute(:o, [0, 0])
+      place_x_marker.execute(:x, [0, 1])
+      place_o_marker.execute(:o, [1, 2])
+      place_x_marker.execute(:x, [2, 1])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:o, :x, nil],
+          [nil, nil, :o],
+          [nil, :x, nil]
+        ]
+      )
+
+      expect(win_vertical_game.execute).to eq(:no_win)
+    end
+  end
 end

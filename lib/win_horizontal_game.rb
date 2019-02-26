@@ -4,6 +4,6 @@ class WinHorizontalGame
   end
 
   def execute
-    @game_gateway.saved_game.horizontal_win
+    @game_gateway.saved_game.win
   end
 end

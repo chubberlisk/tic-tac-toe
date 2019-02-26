@@ -20,12 +20,12 @@ class Game
 
   def horizontal_win?(marker)
     @grid[0][0..2].all?(marker) || @grid[1][0..2].all?(marker)\
-    || @grid[2][0..2].all?(marker)
+      || @grid[2][0..2].all?(marker)
   end
 
   def vertical_win?(marker)
     grid_column(0).all?(marker) || grid_column(1).all?(marker)\
-    || grid_column(2).all?(marker)
+      || grid_column(2).all?(marker)
   end
 
   def grid_column(index)

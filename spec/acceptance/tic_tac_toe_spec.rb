@@ -2,7 +2,7 @@
 require_relative '../../lib/start_new_game'
 require_relative '../../lib/view_game'
 require_relative '../../lib/place_marker'
-require_relative '../../lib/win_horizontal_game'
+require_relative '../../lib/evaluate_game'
 
 describe 'Tic Tac Toe' do
   class InMemoryGameGateway
@@ -95,7 +95,7 @@ describe 'Tic Tac Toe' do
   end
 
   context 'when a player wins horizontally' do
-    let(:win_horizontal_game) { WinHorizontalGame.new(game_gateway) }
+    let(:evaluate_game) { EvaluateGame.new(game_gateway) }
 
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
@@ -113,7 +113,7 @@ describe 'Tic Tac Toe' do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do
@@ -130,7 +130,7 @@ describe 'Tic Tac Toe' do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the third row' do
@@ -147,7 +147,7 @@ describe 'Tic Tac Toe' do
           [:x, :x, :x]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the first row' do
@@ -164,7 +164,7 @@ describe 'Tic Tac Toe' do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_o_win)
+      expect(evaluate_game.execute).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the second row' do
@@ -181,7 +181,7 @@ describe 'Tic Tac Toe' do
           [nil, nil, nil]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the third row' do
@@ -198,7 +198,7 @@ describe 'Tic Tac Toe' do
           [:x, :x, :x]
         ]
       )
-      expect(win_horizontal_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can recognise when there is no horizontal win' do
@@ -215,12 +215,12 @@ describe 'Tic Tac Toe' do
         ]
       )
 
-      expect(win_horizontal_game.execute).to eq(:no_win)
+      expect(evaluate_game.execute).to eq(:no_win)
     end
   end
 
   context 'when a player wins vertically' do
-    let(:win_vertical_game) { WinVerticalGame.new(game_gateway) }
+    let(:evaluate_game) { EvaluateGame.new(game_gateway) }
 
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
@@ -238,7 +238,7 @@ describe 'Tic Tac Toe' do
           [:x, nil, nil]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row vertically in the second column' do
@@ -255,7 +255,7 @@ describe 'Tic Tac Toe' do
           [:o, :x, nil]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row vertically in the third column' do
@@ -272,7 +272,7 @@ describe 'Tic Tac Toe' do
           [:o, nil, :x]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_x_win)
+      expect(evaluate_game.execute).to eq(:player_x_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the first column' do
@@ -289,7 +289,7 @@ describe 'Tic Tac Toe' do
           [:o, :x, nil]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_o_win)
+      expect(evaluate_game.execute).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row vertically in the second column' do
@@ -306,7 +306,7 @@ describe 'Tic Tac Toe' do
           [nil, :o, nil]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_o_win)
+      expect(evaluate_game.execute).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row vertically in the third column' do
@@ -323,7 +323,7 @@ describe 'Tic Tac Toe' do
           [:x, nil, :o]
         ]
       )
-      expect(win_vertical_game.execute).to eq(:player_o_win)
+      expect(evaluate_game.execute).to eq(:player_o_win)
     end
 
     it 'can recognise when there is no vertical win' do
@@ -340,7 +340,7 @@ describe 'Tic Tac Toe' do
         ]
       )
 
-      expect(win_vertical_game.execute).to eq(:no_win)
+      expect(evaluate_game.execute).to eq(:no_win)
     end
   end
 end

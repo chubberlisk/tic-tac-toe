@@ -11,8 +11,8 @@ describe PlaceMarker do
   end
 
   let(:game_gateway) { GameGatewayStubAndSpy.new }
-  let(:place_x_marker) { PlaceMarker.new(game_gateway, :x) }
-  let(:place_o_marker) { PlaceMarker.new(game_gateway, :o) }
+  let(:place_x_marker) { PlaceMarker.new(game_gateway) }
+  let(:place_o_marker) { PlaceMarker.new(game_gateway) }
   let(:empty_grid) do
     [
       [nil, nil, nil],
@@ -24,26 +24,8 @@ describe PlaceMarker do
   before { game_gateway.saved_game = Game.new(empty_grid) }
 
   context 'place X marker' do
-    it 'can retrieve the grid' do
-      place_x_marker.execute(nil)
-
-      expect(place_x_marker.grid).to eq(empty_grid)
-    end
-
-    it 'can place X marker at (0, 0) on the grid' do
-      place_x_marker.execute([0, 0])
-
-      expect(game_gateway.saved_game.grid).to eq(
-        [
-          [:x, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, nil]
-        ]
-      )
-    end
-
     it 'can place X marker at (2, 1) on the grid' do
-      place_x_marker.execute([2, 1])
+      place_x_marker.execute(:x, [2, 1])
 
       expect(game_gateway.saved_game.grid).to eq(
         [
@@ -56,14 +38,8 @@ describe PlaceMarker do
   end
 
   context 'place O marker' do
-    it 'can retrieve the grid' do
-      place_o_marker.execute(nil)
-
-      expect(place_o_marker.grid).to eq(empty_grid)
-    end
-
     it 'can place O marker at (0, 0) on the grid' do
-      place_o_marker.execute([0, 0])
+      place_o_marker.execute(:o, [0, 0])
 
       expect(game_gateway.saved_game.grid).to eq(
         [
@@ -75,7 +51,7 @@ describe PlaceMarker do
     end
 
     it 'can place O marker at (1, 2) on the grid' do
-      place_o_marker.execute([1, 2])
+      place_o_marker.execute(:o, [1, 2])
 
       expect(game_gateway.saved_game.grid).to eq(
         [
@@ -89,23 +65,23 @@ describe PlaceMarker do
 
   context 'raise error' do
     it 'can raise an error when a O marker is placed at (2, 1) on a taken position' do
-      place_x_marker.execute([2, 1])
-      expect { place_o_marker.execute([2, 1]) }.to raise_error(InvalidMoveError)
+      place_x_marker.execute(:o, [2, 1])
+      expect { place_o_marker.execute(:x, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when a O marker is placed at (2, 2) on a taken position' do
-      place_x_marker.execute([2, 2])
-      expect { place_o_marker.execute([2, 2]) }.to raise_error(InvalidMoveError)
+      place_x_marker.execute(:o, [2, 2])
+      expect { place_o_marker.execute(:x, [2, 2]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when an X marker is placed at (0, 1) on a taken position' do
-      place_o_marker.execute([0, 1])
-      expect { place_x_marker.execute([0, 1]) }.to raise_error(InvalidMoveError)
+      place_o_marker.execute(:x, [0, 1])
+      expect { place_x_marker.execute(:o, [0, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
 
     it 'can raise an error when an X marker is placed at (1, 1) on a taken position' do
-      place_o_marker.execute([1, 1])
-      expect { place_x_marker.execute([1, 1]) }.to raise_error(InvalidMoveError)
+      place_o_marker.execute(:x, [1, 1])
+      expect { place_x_marker.execute(:o, [1, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
     end
   end
 end

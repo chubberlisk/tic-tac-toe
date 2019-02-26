@@ -1,4 +1,4 @@
-class WinHorizontalGame
+class WinVerticalGame
   def initialize(game_gateway)
     @game_gateway = game_gateway
   end

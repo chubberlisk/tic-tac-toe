@@ -146,6 +146,54 @@ describe EvaluateGame do
     end
   end
 
+  context 'when Player X wins diagonally' do
+    it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do 
+      game_gateway.saved_game = Game.new(
+        [
+          [:o, nil, :x],
+          [nil, :x, nil],
+          [:x, nil, :o]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do 
+      game_gateway.saved_game = Game.new(
+        [
+          [:x, nil, nil],
+          [nil, :x, :o],
+          [:o, nil, :x]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_x_win)
+    end
+  end
+
+  context 'when Player O wins diagonally' do
+    it 'can win a game when player o has 3 in a row diagonally from bottom left to top right' do 
+      game_gateway.saved_game = Game.new(
+        [
+          [:x, nil, :o],
+          [nil, :o, :x],
+          [:o, nil, nil]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_o_win)
+    end
+
+    it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do 
+      game_gateway.saved_game = Game.new(
+        [
+          [:o, nil, :x],
+          [:x, :o, nil],
+          [nil, nil, :o]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_o_win)
+    end
+  end
+
   context 'when there is not a winner' do
     it 'can recognise when there is no horizontal win' do
       game_gateway.saved_game = Game.new(

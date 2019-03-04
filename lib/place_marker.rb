@@ -1,13 +1,15 @@
 class PlaceMarker
   InvalidMoveError = Class.new(RuntimeError)
+  InvalidPositionError = Class.new(RuntimeError)
 
   def initialize(game_gateway)
     @game_gateway = game_gateway
   end
 
   def execute(marker, position)
+    raise InvalidPositionError unless inside_grid?(position)
+
     grid = @game_gateway.saved_game.grid
-    return if position.nil?
 
     raise InvalidMoveError if already_taken?(grid, position)
 
@@ -21,5 +23,9 @@ class PlaceMarker
 
   def already_taken?(grid, position)
     grid[position[0]][position[1]]
+  end
+
+  def inside_grid?(position)
+    position[0].between?(0, 2) && position[1].between?(0, 2)
   end
 end

@@ -15,7 +15,7 @@ class Game
   private
 
   def win?(marker)
-    horizontal_win?(marker) || vertical_win?(marker)
+    horizontal_win?(marker) || vertical_win?(marker) || diagonal_win?(marker)
   end
 
   def horizontal_win?(marker)
@@ -28,7 +28,19 @@ class Game
       || grid_column(2).all?(marker)
   end
 
+  def diagonal_win?(marker)
+    positive_diagonal.all?(marker) || negative_diagonal.all?(marker)
+  end
+
   def grid_column(index)
     [@grid[0][index], @grid[1][index], @grid[2][index]]
+  end
+
+  def positive_diagonal
+    [@grid[0][2], @grid[1][1], @grid[2][0]]
+  end
+
+  def negative_diagonal
+    [@grid[0][0], @grid[1][1], @grid[2][2]]
   end
 end

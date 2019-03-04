@@ -9,8 +9,7 @@ describe 'Tic Tac Toe' do
   let(:game_gateway) { GameGatewayFake.new }
   let(:start_new_game) { StartNewGame.new(game_gateway) }
   let(:view_game) { ViewGame.new(game_gateway) }
-  let(:place_x_marker) { PlaceMarker.new(game_gateway) }
-  let(:place_o_marker) { PlaceMarker.new(game_gateway) }
+  let(:place_marker) { PlaceMarker.new(game_gateway) }
   let(:empty_grid) do
     [
       [nil, nil, nil],
@@ -29,7 +28,7 @@ describe 'Tic Tac Toe' do
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
     it 'can place an X marker in a position on the grid' do
-      place_x_marker.execute(:x, [0, 0])
+      place_marker.execute(:x, [0, 0])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -41,7 +40,7 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can place an O marker in a position on the grid' do
-      place_o_marker.execute(:o, [2, 2])
+      place_marker.execute(:o, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -53,8 +52,8 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can place an X and O marker in a position on the grid' do
-      place_x_marker.execute(:x, [0, 2])
-      place_o_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [0, 2])
+      place_marker.execute(:o, [1, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -66,7 +65,7 @@ describe 'Tic Tac Toe' do
     end
 
     it 'cannot place a marker in a position that already has a marker' do
-      place_x_marker.execute(:x, [2, 1])
+      place_marker.execute(:x, [2, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -76,7 +75,7 @@ describe 'Tic Tac Toe' do
         ]
       )
 
-      expect { place_o_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
+      expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
       expect(view_game.execute.grid).to eq(
         [
           [nil, nil, nil],
@@ -84,6 +83,20 @@ describe 'Tic Tac Toe' do
           [nil, :x, nil]
         ]
       )
+    end
+
+    it 'cannot place a marker in a position that is outside the grid' do
+      expect { place_marker.execute(:o, [-6, 1]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [3, 0]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [2, -3]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [2, 7]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
     end
   end
 
@@ -93,11 +106,11 @@ describe 'Tic Tac Toe' do
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
     it 'can win a game when player X has 3 in a row horizontally in the first row' do
-      place_x_marker.execute(:x, [0, 0])
-      place_o_marker.execute(:o, [1, 0])
-      place_x_marker.execute(:x, [0, 1])
-      place_o_marker.execute(:o, [1, 1])
-      place_x_marker.execute(:x, [0, 2])
+      place_marker.execute(:x, [0, 0])
+      place_marker.execute(:o, [1, 0])
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [0, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -110,11 +123,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do
-      place_x_marker.execute(:x, [1, 0])
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [1, 1])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [1, 2])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -127,11 +140,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the third row' do
-      place_x_marker.execute(:x, [2, 0])
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [2, 1])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [2, 2])
+      place_marker.execute(:x, [2, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [2, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -144,11 +157,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the first row' do
-      place_x_marker.execute(:o, [0, 0])
-      place_o_marker.execute(:x, [1, 0])
-      place_x_marker.execute(:o, [0, 1])
-      place_o_marker.execute(:x, [1, 1])
-      place_x_marker.execute(:o, [0, 2])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [0, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -161,11 +174,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the second row' do
-      place_x_marker.execute(:x, [1, 0])
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [1, 1])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [1, 2])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -178,11 +191,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the third row' do
-      place_x_marker.execute(:x, [2, 0])
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [2, 1])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [2, 2])
+      place_marker.execute(:x, [2, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [2, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -195,10 +208,10 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can recognise when there is no horizontal win' do
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [2, 1])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [2, 2])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [2, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -218,11 +231,11 @@ describe 'Tic Tac Toe' do
     before { game_gateway.saved_game = Game.new(empty_grid) }
 
     it 'can win a game when player X has 3 in a row vertically in the first column' do
-      place_x_marker.execute(:x, [0, 0])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [1, 0])
-      place_o_marker.execute(:o, [0, 2])
-      place_x_marker.execute(:x, [2, 0])
+      place_marker.execute(:x, [0, 0])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [0, 2])
+      place_marker.execute(:x, [2, 0])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -235,11 +248,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row vertically in the second column' do
-      place_x_marker.execute(:x, [0, 1])
-      place_o_marker.execute(:o, [1, 0])
-      place_x_marker.execute(:x, [1, 1])
-      place_o_marker.execute(:o, [2, 0])
-      place_x_marker.execute(:x, [2, 1])
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 0])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [2, 0])
+      place_marker.execute(:x, [2, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -252,11 +265,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player X has 3 in a row vertically in the third column' do
-      place_x_marker.execute(:x, [0, 2])
-      place_o_marker.execute(:o, [0, 1])
-      place_x_marker.execute(:x, [1, 2])
-      place_o_marker.execute(:o, [2, 0])
-      place_x_marker.execute(:x, [2, 2])
+      place_marker.execute(:x, [0, 2])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 2])
+      place_marker.execute(:o, [2, 0])
+      place_marker.execute(:x, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -269,11 +282,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the first column' do
-      place_x_marker.execute(:o, [0, 0])
-      place_o_marker.execute(:x, [0, 1])
-      place_x_marker.execute(:o, [1, 0])
-      place_o_marker.execute(:x, [2, 1])
-      place_x_marker.execute(:o, [2, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 0])
+      place_marker.execute(:x, [2, 1])
+      place_marker.execute(:o, [2, 0])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -286,11 +299,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row vertically in the second column' do
-      place_x_marker.execute(:o, [0, 1])
-      place_o_marker.execute(:x, [1, 0])
-      place_x_marker.execute(:o, [1, 1])
-      place_o_marker.execute(:x, [1, 2])
-      place_x_marker.execute(:o, [2, 1])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [1, 2])
+      place_marker.execute(:o, [2, 1])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -303,11 +316,11 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can win a game when player O has 3 in a row vertically in the third column' do
-      place_o_marker.execute(:o, [0, 2])
-      place_x_marker.execute(:x, [0, 1])
-      place_o_marker.execute(:o, [1, 2])
-      place_x_marker.execute(:x, [2, 0])
-      place_o_marker.execute(:o, [2, 2])
+      place_marker.execute(:o, [0, 2])
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 2])
+      place_marker.execute(:x, [2, 0])
+      place_marker.execute(:o, [2, 2])
 
       expect(view_game.execute.grid).to eq(
         [
@@ -320,10 +333,10 @@ describe 'Tic Tac Toe' do
     end
 
     it 'can recognise when there is no vertical win' do
-      place_o_marker.execute(:o, [0, 0])
-      place_x_marker.execute(:x, [0, 1])
-      place_o_marker.execute(:o, [1, 2])
-      place_x_marker.execute(:x, [2, 1])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 2])
+      place_marker.execute(:x, [2, 1])
 
       expect(view_game.execute.grid).to eq(
         [

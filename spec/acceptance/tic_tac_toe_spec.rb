@@ -1,19 +1,12 @@
 # frozen_string_literal: true
+require_relative '../test_doubles/game_gateway_fake'
 require_relative '../../lib/start_new_game'
 require_relative '../../lib/view_game'
 require_relative '../../lib/place_marker'
 require_relative '../../lib/evaluate_game'
 
 describe 'Tic Tac Toe' do
-  class InMemoryGameGateway
-    attr_accessor :saved_game
-
-    def save(game)
-      @saved_game = game
-    end
-  end
-
-  let(:game_gateway) { InMemoryGameGateway.new }
+  let(:game_gateway) { GameGatewayFake.new }
   let(:start_new_game) { StartNewGame.new(game_gateway) }
   let(:view_game) { ViewGame.new(game_gateway) }
   let(:place_x_marker) { PlaceMarker.new(game_gateway) }

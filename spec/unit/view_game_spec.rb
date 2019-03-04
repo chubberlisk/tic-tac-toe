@@ -1,11 +1,8 @@
+require_relative '../test_doubles/game_gateway_stub'
 require_relative '../../lib/view_game'
 require_relative '../../lib/game'
 
 describe ViewGame do
-  class GameGatewayStub
-    attr_accessor :saved_game
-  end
-
   it 'can view a game' do
     game_gateway = GameGatewayStub.new
     view_game = ViewGame.new(game_gateway)

@@ -1,14 +1,7 @@
+require_relative '../test_doubles/game_gateway_spy'
 require_relative '../../lib/start_new_game'
 
 describe StartNewGame do
-  class GameGatewaySpy
-    attr_reader :saved_game
-
-    def save(game)
-      @saved_game = game
-    end
-  end
-
   it 'saves a game' do
     game_gateway = GameGatewaySpy.new
     start_new_game = StartNewGame.new(game_gateway)

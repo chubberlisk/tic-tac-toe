@@ -1,11 +1,8 @@
+require_relative '../test_doubles/game_gateway_stub'
 require_relative '../../lib/evaluate_game'
 require_relative '../../lib/game'
 
 describe EvaluateGame do
-  class GameGatewayStub
-    attr_accessor :saved_game
-  end
-
   let(:game_gateway) { GameGatewayStub.new }
   let(:evaluate_game) { EvaluateGame.new(game_gateway) }
 

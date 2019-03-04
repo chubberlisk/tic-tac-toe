@@ -1,16 +1,9 @@
+require_relative '../test_doubles/game_gateway_fake'
 require_relative '../../lib/place_marker'
 require_relative '../../lib/game'
 
 describe PlaceMarker do
-  class GameGatewayStubAndSpy
-    attr_accessor :saved_game
-
-    def save(game)
-      @saved_game = game
-    end
-  end
-
-  let(:game_gateway) { GameGatewayStubAndSpy.new }
+  let(:game_gateway) { GameGatewayFake.new }
   let(:place_x_marker) { PlaceMarker.new(game_gateway) }
   let(:place_o_marker) { PlaceMarker.new(game_gateway) }
   let(:empty_grid) do

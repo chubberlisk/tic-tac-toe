@@ -349,4 +349,78 @@ describe 'Tic Tac Toe' do
       expect(evaluate_game.execute).to eq(:no_win)
     end
   end
+
+  context 'when a player wins diagonally' do
+    let(:evaluate_game) { EvaluateGame.new(game_gateway) }
+
+    before { game_gateway.saved_game = Game.new(empty_grid) }
+
+    it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do
+      place_marker.execute(:x, [2, 0])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [1, 2])
+      place_marker.execute(:x, [0, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:o, nil, :x],
+          [nil, :x, :o],
+          [:x, nil, nil]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do
+      place_marker.execute(:x, [0, 0])
+      place_marker.execute(:o, [1, 0])
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [2, 0])
+      place_marker.execute(:x, [2, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:x, nil, nil],
+          [:o, :x, nil],
+          [:o, nil, :x]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_x_win)
+    end
+
+    it 'can win a game when player O has 3 in a row diagonally from bottom left to top right' do
+      place_marker.execute(:o, [2, 0])
+      place_marker.execute(:x, [0, 0])
+      place_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [1, 2])
+      place_marker.execute(:o, [0, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:x, nil, :o],
+          [nil, :o, :x],
+          [:o, nil, nil]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_o_win)
+    end
+
+    it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [1, 0])
+      place_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [0, 2])
+      place_marker.execute(:o, [2, 2])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:o, nil, :x],
+          [:x, :o, nil],
+          [nil, nil, :o]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:player_o_win)
+    end
+  end
 end

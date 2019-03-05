@@ -5,21 +5,23 @@ class PlaceMarker
 
   def initialize(game_gateway)
     @game_gateway = game_gateway
+    @player_turn = nil
+    @number_of_turns = 0
   end
 
   def execute(marker, position)
-    raise InvalidPositionError unless inside_grid?(position)
+    @player_turn = marker if first_turn?
 
     grid = @game_gateway.saved_game.grid
 
-    raise InvalidTurnError if not_players_turn?(grid, marker)
+    validate_place_marker(grid, marker, position)
 
-    raise InvalidMoveError if already_taken?(grid, position)
-
-    grid[position[0]][position[1]] = marker
+    place_marker_on_grid(grid, marker, position)
 
     game = Game.new(grid)
     @game_gateway.save(game)
+
+    update_player_turn
   end
 
   private
@@ -32,15 +34,22 @@ class PlaceMarker
     position[0].between?(0, 2) && position[1].between?(0, 2)
   end
 
-  def not_players_turn?(grid, marker)
-    total_x_count = grid.reduce(0) { |total, row| total + row.count(:x) }
-    total_o_count = grid.reduce(0) { |total, row| total + row.count(:o) }
-    total_x_count > total_o_count && marker == :x
-    total_x_count < total_o_count && marker == :o
-    if marker == :x
-      total_x_count > total_o_count
-    else
-      total_x_count < total_o_count
-    end
+  def first_turn?
+    @number_of_turns.zero?
+  end
+
+  def validate_place_marker(grid, marker, position)
+    raise InvalidTurnError if @player_turn != marker
+    raise InvalidPositionError unless inside_grid?(position)
+    raise InvalidMoveError if already_taken?(grid, position)
+  end
+
+  def place_marker_on_grid(grid, marker, position)
+    grid[position[0]][position[1]] = marker
+  end
+
+  def update_player_turn
+    @player_turn = @player_turn == :x ? :o : :x
+    @number_of_turns += 1
   end
 end

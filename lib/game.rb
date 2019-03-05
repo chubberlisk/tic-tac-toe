@@ -8,6 +8,7 @@ class Game
   def win
     return :player_x_win if win?(:x)
     return :player_o_win if win?(:o)
+    return :draw if draw?
 
     :no_win
   end
@@ -30,6 +31,15 @@ class Game
 
   def diagonal_win?(marker)
     positive_diagonal.all?(marker) || negative_diagonal.all?(marker)
+  end
+
+  def draw?
+    @grid.each { |row| return false if empty_space_in?(row) }
+    true
+  end
+
+  def empty_space_in?(row)
+    row.include?(nil)
   end
 
   def grid_column(index)

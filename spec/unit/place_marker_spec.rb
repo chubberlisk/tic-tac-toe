@@ -103,61 +103,32 @@ describe PlaceMarker do
     it 'can raise an error when the Player X takes two turns in a row' do
       game_gateway.saved_game = Game.new(
         [
-          [nil, nil, :x],
+          [nil, nil, nil],
           [nil, nil, nil],
           [nil, nil, nil]
         ]
       )
 
-      expect { place_marker.execute(:x, [1, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
-    end
+      place_marker.execute(:x, [1, 1])
+      place_marker.execute(:o, [0, 0])
+      place_marker.execute(:x, [2, 1])
 
-    it 'can raise an error when the Player X takes two turns in a row' do
-      game_gateway.saved_game = Game.new(
-        [
-          [:o, nil, :x],
-          [nil, :x, nil],
-          [nil, nil, nil]
-        ]
-      )
-
-      expect { place_marker.execute(:x, [2, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
+      expect { place_marker.execute(:x, [1, 2]) }.to raise_error(PlaceMarker::InvalidTurnError)
     end
 
     it 'can raise an error when the Player O takes two turns in a row' do
       game_gateway.saved_game = Game.new(
         [
           [nil, nil, nil],
-          [nil, :o, nil],
+          [nil, nil, nil],
           [nil, nil, nil]
         ]
       )
+
+      place_marker.execute(:x, [0, 1])
+      place_marker.execute(:o, [1, 1])
 
       expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
-    end
-
-    it 'can raise an error when the Player O takes two turns in a row' do
-      game_gateway.saved_game = Game.new(
-        [
-          [nil, nil, :o],
-          [nil, nil, :x],
-          [:o, nil, nil]
-        ]
-      )
-
-      expect { place_marker.execute(:o, [0, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
-    end
-
-    it 'can raise an error when the Player O takes two turns in a row, given the same number of Xs and Os' do
-      game_gateway.saved_game = Game.new(
-        [
-          [:x, nil, :o],
-          [nil, nil, :x],
-          [:o, nil, nil]
-        ]
-      )
-
-      expect { place_marker.execute(:o, [2, 2]) }.to raise_error(PlaceMarker::InvalidTurnError)
     end
   end
 end

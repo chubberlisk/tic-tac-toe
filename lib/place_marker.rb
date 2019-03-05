@@ -3,8 +3,8 @@ class PlaceMarker
   InvalidPositionError = Class.new(RuntimeError)
   InvalidTurnError = Class.new(RuntimeError)
 
-  def initialize(game_gateway)
-    @game_gateway = game_gateway
+  def initialize(grid_gateway)
+    @grid_gateway = grid_gateway
     @player_turn = nil
     @number_of_turns = 0
   end
@@ -12,14 +12,17 @@ class PlaceMarker
   def execute(marker, position)
     @player_turn = marker if first_turn?
 
-    grid = @game_gateway.saved_game.grid
+    grid = @grid_gateway.saved_grid.state
 
     validate_place_marker(grid, marker, position)
 
     place_marker_on_grid(grid, marker, position)
 
-    game = Game.new(grid)
-    @game_gateway.save(game)
+    # game = Game.new(grid)
+    grid_obj = Grid.new
+    grid_obj.state = grid
+
+    @grid_gateway.save(grid_obj)
 
     update_player_turn
   end

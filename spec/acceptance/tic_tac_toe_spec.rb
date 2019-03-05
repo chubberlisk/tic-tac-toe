@@ -437,4 +437,32 @@ describe 'Tic Tac Toe' do
       expect { place_marker.execute(:o, [0, 0]) }.to raise_error(PlaceMarker::InvalidTurnError)
     end
   end
+
+  context 'when the players draw' do
+    let(:evaluate_game) { EvaluateGame.new(game_gateway) }
+
+    before { game_gateway.saved_game = Game.new(empty_grid) }
+
+    it 'can draw a game when no player has won' do
+      place_marker.execute(:x, [0, 0])
+      place_marker.execute(:o, [0, 1])
+      place_marker.execute(:x, [0, 2])
+      place_marker.execute(:o, [1, 0])
+      place_marker.execute(:x, [1, 2])
+      place_marker.execute(:o, [1, 1])
+      place_marker.execute(:x, [2, 0])
+      place_marker.execute(:o, [2, 2])
+      place_marker.execute(:x, [2, 1])
+
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [:x, :o, :x],
+          [:o, :o, :x],
+          [:x, :x, :o]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:draw)
+    end
+  end
 end

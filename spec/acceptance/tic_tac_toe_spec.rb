@@ -63,41 +63,6 @@ describe 'Tic Tac Toe' do
         ]
       )
     end
-
-    it 'cannot place a marker in a position that already has a marker' do
-      place_marker.execute(:x, [2, 1])
-
-      expect(view_game.execute.grid).to eq(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, :x, nil]
-        ]
-      )
-
-      expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
-      expect(view_game.execute.grid).to eq(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, :x, nil]
-        ]
-      )
-    end
-
-    it 'cannot place a marker in a position that is outside the grid' do
-      expect { place_marker.execute(:o, [-6, 1]) }.to raise_error(PlaceMarker::InvalidPositionError)
-      expect(view_game.execute.grid).to eq(empty_grid)
-
-      expect { place_marker.execute(:o, [3, 0]) }.to raise_error(PlaceMarker::InvalidPositionError)
-      expect(view_game.execute.grid).to eq(empty_grid)
-
-      expect { place_marker.execute(:o, [2, -3]) }.to raise_error(PlaceMarker::InvalidPositionError)
-      expect(view_game.execute.grid).to eq(empty_grid)
-
-      expect { place_marker.execute(:o, [2, 7]) }.to raise_error(PlaceMarker::InvalidPositionError)
-      expect(view_game.execute.grid).to eq(empty_grid)
-    end
   end
 
   context 'when a player wins horizontally' do
@@ -421,6 +386,55 @@ describe 'Tic Tac Toe' do
         ]
       )
       expect(evaluate_game.execute).to eq(:player_o_win)
+    end
+  end
+
+  context 'when an error is raised' do
+    before { game_gateway.saved_game = Game.new(empty_grid) }
+
+    it 'cannot place a marker in a position that already has a marker' do
+      place_marker.execute(:x, [2, 1])
+
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, nil, nil],
+          [nil, nil, nil],
+          [nil, :x, nil]
+        ]
+      )
+
+      expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
+      expect(view_game.execute.grid).to eq(
+        [
+          [nil, nil, nil],
+          [nil, nil, nil],
+          [nil, :x, nil]
+        ]
+      )
+    end
+
+    it 'cannot place a marker in a position that is outside the grid' do
+      expect { place_marker.execute(:o, [-6, 1]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [3, 0]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [2, -3]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+
+      expect { place_marker.execute(:o, [2, 7]) }.to raise_error(PlaceMarker::InvalidPositionError)
+      expect(view_game.execute.grid).to eq(empty_grid)
+    end
+
+    it 'can alert Player X that it is not their turn to place a marker' do
+      place_marker.execute(:x, [1, 1])
+      expect { place_marker.execute(:x, [0, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
+    end
+
+    it 'can alert Player O that it is not their turn to place a marker' do
+      place_marker.execute(:o, [2, 2])
+      expect { place_marker.execute(:o, [0, 0]) }.to raise_error(PlaceMarker::InvalidTurnError)
     end
   end
 end

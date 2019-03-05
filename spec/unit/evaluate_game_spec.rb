@@ -217,4 +217,28 @@ describe EvaluateGame do
       expect(evaluate_game.execute).to eq(:no_win)
     end
   end
+
+  context 'when there is a draw' do
+    it 'can draw a game' do
+      game_gateway.saved_game = Game.new(
+        [
+          [:x, :x, :o],
+          [:o, :o, :x],
+          [:x, :o, :x]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:draw)
+    end
+
+    it 'can draw a game for a different grid' do 
+      game_gateway.saved_game = Game.new(
+        [
+          [:x, :o, :o],
+          [:o, :x, :x],
+          [:o, :x, :o]
+        ]
+      )
+      expect(evaluate_game.execute).to eq(:draw)
+    end
+  end
 end

@@ -24,6 +24,7 @@ class PlaceMarker
     @grid_gateway.save(grid)
 
     update_player_turn
+    {}
   end
 
   private

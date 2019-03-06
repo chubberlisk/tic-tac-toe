@@ -15,7 +15,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do 
@@ -27,7 +29,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the last row' do
@@ -39,7 +43,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
   end
 
@@ -53,7 +59,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the second row' do 
@@ -65,7 +73,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the third row' do 
@@ -77,7 +87,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
   end
 
@@ -91,7 +103,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a column vertically in the second column' do 
@@ -103,7 +117,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a column vertically in the last column' do 
@@ -114,8 +130,10 @@ describe EvaluateGrid do
       ]
 
       grid_gateway.saved_grid = grid
-      
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
   end
 
@@ -129,7 +147,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a column vertically in the second column' do 
@@ -141,7 +161,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a column vertically in the third column' do 
@@ -153,7 +175,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
   end
 
@@ -167,7 +191,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do 
@@ -179,7 +205,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_x_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
     end
   end
 
@@ -193,7 +221,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do 
@@ -205,7 +235,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game on the games last turn' do
@@ -217,7 +249,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:player_o_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
     end
   end
 
@@ -231,7 +265,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:no_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
     end
 
     it 'can recognise when there is no vertical win' do
@@ -243,7 +279,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:no_win)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
     end
   end
 
@@ -257,7 +295,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:draw)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:draw)
     end
 
     it 'can draw a game for a different grid' do
@@ -269,7 +309,9 @@ describe EvaluateGrid do
 
       grid_gateway.saved_grid = grid
 
-      expect(evaluate_grid.execute).to eq(:draw)
+      evaluate_grid_response = evaluate_grid.execute({})
+
+      expect(evaluate_grid_response[:outcome]).to eq(:draw)
     end
   end
 end

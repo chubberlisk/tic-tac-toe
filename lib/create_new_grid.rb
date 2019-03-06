@@ -5,7 +5,8 @@ class CreateNewGrid
     @grid_gateway = grid_gateway
   end
 
-  def execute
+  def execute(*)
     @grid_gateway.save(Grid.new)
+    {}
   end
 end

@@ -7,7 +7,9 @@ describe ViewGrid do
 
     grid_gateway.saved_grid = Grid.new
 
-    expect(view_grid.execute.state).to eq(
+    response = view_grid.execute({})
+
+    expect(response[:grid].state).to eq(
       [
         [nil, nil, nil],
         [nil, nil, nil],

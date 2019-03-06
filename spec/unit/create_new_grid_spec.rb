@@ -5,7 +5,7 @@ describe CreateNewGrid do
     grid_gateway = GridGatewaySpy.new
     start_new_game = CreateNewGrid.new(grid_gateway)
 
-    start_new_game.execute
+    start_new_game.execute({})
 
     expect(grid_gateway.saved_grid.state).to eq(
       [

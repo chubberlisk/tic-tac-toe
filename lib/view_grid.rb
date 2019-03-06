@@ -3,7 +3,9 @@ class ViewGrid
     @grid_gateway = grid_gateway
   end
 
-  def execute
-    @grid_gateway.retrieve
+  def execute(*)
+    {
+      grid: @grid_gateway.retrieve
+    }
   end
 end

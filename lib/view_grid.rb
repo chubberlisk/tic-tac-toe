@@ -4,6 +4,6 @@ class ViewGrid
   end
 
   def execute
-    @grid_gateway.saved_grid
+    @grid_gateway.retrieve
   end
 end

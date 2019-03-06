@@ -209,6 +209,18 @@ describe EvaluateGrid do
 
       expect(evaluate_grid.execute).to eq(:player_o_win)
     end
+
+    it 'can win a game on the games last turn' do
+      grid.state = [
+        [:o, :o, :x],
+        [:x, :o, :o],
+        [:x, :o, :x]
+      ]
+
+      grid_gateway.saved_grid = grid
+
+      expect(evaluate_grid.execute).to eq(:player_o_win)
+    end
   end
 
   context 'when there is not a winner' do

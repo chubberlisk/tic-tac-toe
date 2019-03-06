@@ -4,12 +4,12 @@ class EvaluateGrid
   end
 
   def execute
-    grid = @grid_gateway.saved_grid
-
+    grid = @grid_gateway.retrieve
+    
     return :player_x_win if grid.win?(:x)
     return :player_o_win if grid.win?(:o)
     return :draw if grid.draw?
-
+    
     :no_win
   end
 end

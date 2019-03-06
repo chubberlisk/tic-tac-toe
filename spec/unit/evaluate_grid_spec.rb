@@ -267,7 +267,7 @@ describe EvaluateGrid do
 
       evaluate_grid_response = evaluate_grid.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
+      expect(evaluate_grid_response[:outcome]).to eq(:continue)
     end
 
     it 'can recognise when there is no vertical win' do
@@ -281,7 +281,7 @@ describe EvaluateGrid do
 
       evaluate_grid_response = evaluate_grid.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
+      expect(evaluate_grid_response[:outcome]).to eq(:continue)
     end
   end
 

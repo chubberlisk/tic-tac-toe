@@ -224,7 +224,7 @@ describe 'Tic Tac Toe' do
 
       evaluate_grid_response = evaluate_grid.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
+      expect(evaluate_grid_response[:outcome]).to eq(:continue)
     end
   end
 
@@ -383,7 +383,7 @@ describe 'Tic Tac Toe' do
 
       evaluate_grid_response = evaluate_grid.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:no_win)
+      expect(evaluate_grid_response[:outcome]).to eq(:continue)
     end
   end
 

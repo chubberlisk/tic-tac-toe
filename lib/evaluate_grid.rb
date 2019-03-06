@@ -6,7 +6,7 @@ class EvaluateGrid
   def execute(*)
     grid = @grid_gateway.retrieve
 
-    outcome = :no_win
+    outcome = :continue
     outcome = :draw if grid.draw?
     outcome = :player_x_win if grid.win?(:x)
     outcome = :player_o_win if grid.win?(:o)

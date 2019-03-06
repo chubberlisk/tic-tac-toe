@@ -1,6 +1,4 @@
-require_relative '../test_doubles/grid_gateway_stub'
-require_relative '../../lib/evaluate_grid'
-require_relative '../../lib/grid'
+require "spec_helper"
 
 describe EvaluateGrid do
   let(:grid_gateway) { GridGatewayStub.new }

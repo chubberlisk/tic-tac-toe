@@ -1,9 +1,5 @@
 # frozen_string_literal: true
-require_relative '../test_doubles/grid_gateway_fake'
-require_relative '../../lib/create_new_grid'
-require_relative '../../lib/view_grid'
-require_relative '../../lib/place_marker'
-require_relative '../../lib/evaluate_grid'
+require "spec_helper"
 
 describe 'Tic Tac Toe' do
   let(:grid_gateway) { GridGatewayFake.new }

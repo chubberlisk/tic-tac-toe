@@ -1,5 +1,4 @@
-require_relative '../test_doubles/grid_gateway_spy'
-require_relative '../../lib/create_new_grid'
+require "spec_helper"
 
 describe CreateNewGrid do
   it 'creates a new grid' do

@@ -1,5 +1,4 @@
-require_relative '../test_doubles/grid_gateway_fake'
-require_relative '../../lib/place_marker'
+require "spec_helper"
 
 describe PlaceMarker do
   let(:grid_gateway) { GridGatewayFake.new }

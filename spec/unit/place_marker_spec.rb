@@ -1,10 +1,8 @@
-require_relative '../test_doubles/game_gateway_fake'
-require_relative '../../lib/place_marker'
-require_relative '../../lib/game'
+require "spec_helper"
 
 describe PlaceMarker do
-  let(:game_gateway) { GameGatewayFake.new }
-  let(:place_marker) { PlaceMarker.new(game_gateway) }
+  let(:grid_gateway) { GridGatewayFake.new }
+  let(:place_marker) { PlaceMarker.new(grid_gateway) }
   let(:empty_grid) do
     [
       [nil, nil, nil],
@@ -13,13 +11,13 @@ describe PlaceMarker do
     ]
   end
 
-  before { game_gateway.saved_game = Game.new(empty_grid) }
+  before { grid_gateway.saved_grid = Grid.new }
 
   context 'when an X marker is placed' do
     it 'can place X marker at (2, 1) on the grid' do
       place_marker.execute(:x, [2, 1])
 
-      expect(game_gateway.saved_game.grid).to eq(
+      expect(grid_gateway.saved_grid.state).to eq(
         [
           [nil, nil, nil],
           [nil, nil, nil],
@@ -33,7 +31,7 @@ describe PlaceMarker do
     it 'can place O marker at (0, 0) on the grid' do
       place_marker.execute(:o, [0, 0])
 
-      expect(game_gateway.saved_game.grid).to eq(
+      expect(grid_gateway.saved_grid.state).to eq(
         [
           [:o, nil, nil],
           [nil, nil, nil],
@@ -45,7 +43,7 @@ describe PlaceMarker do
     it 'can place O marker at (1, 2) on the grid' do
       place_marker.execute(:o, [1, 2])
 
-      expect(game_gateway.saved_game.grid).to eq(
+      expect(grid_gateway.saved_grid.state).to eq(
         [
           [nil, nil, nil],
           [nil, nil, :o],
@@ -101,13 +99,7 @@ describe PlaceMarker do
 
   context 'when it is not the turn of the player to place a marker' do
     it 'can raise an error when the Player X takes two turns in a row' do
-      game_gateway.saved_game = Game.new(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, nil]
-        ]
-      )
+      grid_gateway.saved_grid = Grid.new
 
       place_marker.execute(:x, [1, 1])
       place_marker.execute(:o, [0, 0])
@@ -117,13 +109,7 @@ describe PlaceMarker do
     end
 
     it 'can raise an error when the Player O takes two turns in a row' do
-      game_gateway.saved_game = Game.new(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, nil]
-        ]
-      )
+      grid_gateway.saved_grid = Grid.new
 
       place_marker.execute(:x, [0, 1])
       place_marker.execute(:o, [1, 1])

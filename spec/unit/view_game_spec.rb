@@ -1,21 +1,15 @@
-require_relative '../test_doubles/game_gateway_stub'
-require_relative '../../lib/view_game'
-require_relative '../../lib/game'
+require "spec_helper"
 
-describe ViewGame do
-  it 'can view a game' do
-    game_gateway = GameGatewayStub.new
-    view_game = ViewGame.new(game_gateway)
+describe ViewGrid do
+  it 'can view a grid' do
+    grid_gateway = GridGatewayStub.new
+    view_grid = ViewGrid.new(grid_gateway)
 
-    game_gateway.saved_game = Game.new(
-      [
-        [nil, nil, nil],
-        [nil, nil, nil],
-        [nil, nil, nil]
-      ]
-    )
+    grid_gateway.saved_grid = Grid.new
 
-    expect(view_game.execute.grid).to eq(
+    response = view_grid.execute({})
+
+    expect(response[:grid]).to eq(
       [
         [nil, nil, nil],
         [nil, nil, nil],

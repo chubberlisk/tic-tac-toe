@@ -9,7 +9,7 @@ describe ViewGrid do
 
     response = view_grid.execute({})
 
-    expect(response[:grid].state).to eq(
+    expect(response[:grid]).to eq(
       [
         [nil, nil, nil],
         [nil, nil, nil],

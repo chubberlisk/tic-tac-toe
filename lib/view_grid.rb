@@ -4,8 +4,9 @@ class ViewGrid
   end
 
   def execute(*)
+    grid = @grid_gateway.retrieve
     {
-      grid: @grid_gateway.retrieve
+      grid: grid.state
     }
   end
 end

@@ -19,7 +19,7 @@ describe 'Tic Tac Toe' do
 
     view_grid_response = view_grid.execute({})
 
-    expect(view_grid_response[:grid].state).to eq(empty_grid)
+    expect(view_grid_response[:grid]).to eq(empty_grid)
   end
 
   context 'when grid has been created' do
@@ -30,7 +30,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, nil, nil],
           [nil, nil, nil],
@@ -44,7 +44,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, nil, nil],
           [nil, nil, nil],
@@ -59,7 +59,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, nil, :x],
           [nil, :o, nil],
@@ -83,7 +83,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, :x, :x],
           [:o, :o, nil],
@@ -105,7 +105,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, nil],
           [:x, :x, :x],
@@ -127,7 +127,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, nil],
           [nil, nil, nil],
@@ -149,7 +149,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, :o],
           [:x, :x, nil],
@@ -171,7 +171,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, nil],
           [:x, :x, :x],
@@ -193,7 +193,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, nil],
           [nil, nil, nil],
@@ -214,7 +214,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :o, nil],
           [nil, nil, nil],
@@ -242,7 +242,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, :o, :o],
           [:x, nil, nil],
@@ -264,7 +264,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, :x, nil],
           [:o, :x, nil],
@@ -286,7 +286,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, :o, :x],
           [nil, nil, :x],
@@ -308,7 +308,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :x, nil],
           [:o, nil, nil],
@@ -330,7 +330,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, :o, nil],
           [:x, :o, :x],
@@ -352,7 +352,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, :x, :o],
           [nil, nil, :o],
@@ -373,7 +373,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, :x, nil],
           [nil, nil, :o],
@@ -401,7 +401,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, nil, :x],
           [nil, :x, :o],
@@ -423,7 +423,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, nil, nil],
           [:o, :x, nil],
@@ -445,7 +445,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, nil, :o],
           [nil, :o, :x],
@@ -467,7 +467,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:o, nil, :x],
           [:x, :o, nil],
@@ -489,7 +489,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, nil, nil],
           [nil, nil, nil],
@@ -498,7 +498,7 @@ describe 'Tic Tac Toe' do
       )
 
       expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [nil, nil, nil],
           [nil, nil, nil],
@@ -512,25 +512,25 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(empty_grid)
+      expect(view_grid_response[:grid]).to eq(empty_grid)
 
       expect { place_marker.execute(:o, [3, 0]) }.to raise_error(PlaceMarker::InvalidPositionError)
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(empty_grid)
+      expect(view_grid_response[:grid]).to eq(empty_grid)
 
       expect { place_marker.execute(:o, [2, -3]) }.to raise_error(PlaceMarker::InvalidPositionError)
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(empty_grid)
+      expect(view_grid_response[:grid]).to eq(empty_grid)
 
       expect { place_marker.execute(:o, [2, 7]) }.to raise_error(PlaceMarker::InvalidPositionError)
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(empty_grid)
+      expect(view_grid_response[:grid]).to eq(empty_grid)
     end
 
     it 'can alert Player X that it is not their turn to place a marker' do
@@ -562,7 +562,7 @@ describe 'Tic Tac Toe' do
 
       view_grid_response = view_grid.execute({})
 
-      expect(view_grid_response[:grid].state).to eq(
+      expect(view_grid_response[:grid]).to eq(
         [
           [:x, :o, :x],
           [:o, :o, :x],

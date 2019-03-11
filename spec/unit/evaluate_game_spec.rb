@@ -1,317 +1,317 @@
 require "spec_helper"
 
-describe EvaluateGrid do
-  let(:grid_gateway) { GridGatewayStub.new }
-  let(:evaluate_grid) { EvaluateGrid.new(grid_gateway) }
-  let(:grid) { Grid.new }
+describe UseCase::EvaluateGame do
+  let(:game_gateway) { GameGatewayStub.new }
+  let(:evaluate_game) { UseCase::EvaluateGame.new(game_gateway) }
+  let(:game) { Game.new }
 
   context 'when Player X wins horizontally' do
     it 'can win a game when player X has 3 in a row horizontally in the first row' do 
-      grid.state = [
+       game.grid = [
         [:x, :x, :x],
         [:o, :o, nil],
         [nil, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the second row' do 
-      grid.state = [
+      game.grid = [
         [:o, :o, nil],
         [:x, :x, :x],
         [nil, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row horizontally in the last row' do
-      grid.state = [
+      game.grid = [
         [:o, :o, nil],
         [nil, nil, nil],
         [:x, :x, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
   end
 
   context 'when Player O wins horizontally' do
     it 'can win a game when player O has 3 in a row horizontally in the first row' do 
-      grid.state = [
+      game.grid = [
         [:o, :o, :o],
         [:x, :x, nil],
         [nil, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the second row' do 
-      grid.state = [
+      game.grid = [
         [:x, :x, nil],
         [:o, :o, :o],
         [nil, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row horizontally in the third row' do 
-      grid.state = [
+      game.grid = [
         [:x, :x, nil],
         [nil, nil, nil],
         [:o, :o, :o]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
   end
 
   context 'when Player X wins vertically' do
     it 'can win a game when player X has 3 in a column vertically in the first column' do 
-      grid.state = [
+      game.grid = [
         [:x, :o, :o],
         [:x, nil, nil],
         [:x, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a column vertically in the second column' do 
-      grid.state = [
+      game.grid = [
         [nil, :x, nil],
         [nil, :x, :o],
         [:o, :x, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a column vertically in the last column' do 
-      grid.state = [
+      game.grid = [
         [nil, nil, :x],
         [:o, nil, :x],
         [:o, nil, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
   end
 
   context 'when Player O wins vertically' do
     it 'can win a game when player O has 3 in a column vertically in the first column' do 
-      grid.state = [
+      game.grid = [
         [:o, nil, nil],
         [:o, :x, nil],
         [:o, nil, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a column vertically in the second column' do 
-      grid.state = [
+      game.grid = [
         [:x, :o, nil],
         [nil, :o, :x],
         [nil, :o, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a column vertically in the third column' do 
-      grid.state = [
+      game.grid = [
         [nil, :x, :o],
         [:x, nil, :o],
         [nil, nil, :o]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
   end
 
   context 'when Player X wins diagonally' do
     it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do 
-      grid.state = [
+      game.grid = [
         [:o, nil, :x],
         [nil, :x, nil],
         [:x, nil, :o]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
     it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do 
-      grid.state = [
+      game.grid = [
         [:x, nil, nil],
         [nil, :x, :o],
         [:o, nil, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
   end
 
   context 'when Player O wins diagonally' do
     it 'can win a game when player o has 3 in a row diagonally from bottom left to top right' do 
-      grid.state = [
+      game.grid = [
         [:x, nil, :o],
         [nil, :o, :x],
         [:o, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do 
-      grid.state = [
+      game.grid = [
         [:o, nil, :x],
         [:x, :o, nil],
         [nil, nil, :o]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
     it 'can win a game on the games last turn' do
-      grid.state = [
+      game.grid = [
         [:o, :o, :x],
         [:x, :o, :o],
         [:x, :o, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
+      expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
   end
 
   context 'when there is not a winner' do
     it 'can recognise when there is no horizontal win' do
-      grid.state = [
+      game.grid = [
         [:x, :o, :x],
         [:o, :o, nil],
         [nil, nil, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:continue)
+      expect(evaluate_game_response[:outcome]).to eq(:continue)
     end
 
     it 'can recognise when there is no vertical win' do
-      grid.state = [
+      game.grid = [
         [:x, :o, nil],
         [nil, nil, :x],
         [nil, :o, nil]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:continue)
+      expect(evaluate_game_response[:outcome]).to eq(:continue)
     end
   end
 
   context 'when there is a draw' do
     it 'can draw a game' do
-      grid.state = [
+      game.grid = [
         [:x, :x, :o],
         [:o, :o, :x],
         [:x, :o, :x]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:draw)
+      expect(evaluate_game_response[:outcome]).to eq(:draw)
     end
 
     it 'can draw a game for a different grid' do
-      grid.state = [
+      game.grid = [
         [:x, :o, :o],
         [:o, :x, :x],
         [:o, :x, :o]
       ]
 
-      grid_gateway.saved_grid = grid
+      game_gateway.saved_game = game
 
-      evaluate_grid_response = evaluate_grid.execute({})
+      evaluate_game_response = evaluate_game.execute({})
 
-      expect(evaluate_grid_response[:outcome]).to eq(:draw)
+      expect(evaluate_game_response[:outcome]).to eq(:draw)
     end
   end
 end

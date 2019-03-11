@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ViewGrid do
-  it 'can view a grid' do
+  xit 'can view a grid' do
     grid_gateway = GridGatewayStub.new
     view_grid = ViewGrid.new(grid_gateway)
 

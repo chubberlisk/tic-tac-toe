@@ -13,10 +13,18 @@ class UseCase::TakeTurn
     }
 
     place_marker = UseCase::PlaceMarker.new
+
+ 
     updated_grid = place_marker.execute(place_marker_options)
 
+    game.grid = updated_grid[:grid]
+    game.player_turn = game.player_turn == :player_x ? :player_o  : :player_x
+    @game_gateway.save(game)
+
+
     {
-      grid: updated_grid[:grid]
+      grid: game.grid,
+      player_turn: game.player_turn
     }
   end
 end

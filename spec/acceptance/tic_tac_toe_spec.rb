@@ -28,7 +28,7 @@ describe 'Tic Tac Toe' do
     expect(response[:player_turn]).to eq(:player_x)
   end
 
-  xit 'can take a turn' do
+  it 'can take a turn' do
     game_gateway = GameGatewayFake.new
     start_new_game = UseCase::StartNewGame.new(game_gateway)
 
@@ -55,14 +55,6 @@ describe 'Tic Tac Toe' do
     )
     expect(response[:player_turn]).to eq(:player_o)
   end
-
-  # it 'can create and view a new grid' do
-  #   create_new_grid.execute({})
-
-  #   view_grid_response = view_grid.execute({})
-
-  #   expect(view_grid_response[:grid]).to eq(empty_grid)
-  # end
 
   # context 'when grid has been created' do
   #   before { grid_gateway.saved_grid = Grid.new }

@@ -49,7 +49,7 @@ describe UseCase::TakeTurn do
     ])
   end
 
-  xit 'can give the current player turn when Player X goes first' do
+  it 'can give the current player turn when Player X goes first' do
     game_options = {
       first_player: :player_x
     }
@@ -70,7 +70,7 @@ describe UseCase::TakeTurn do
     expect(response[:player_turn]).to eq(:player_o)
   end
 
-  xit 'can give the current player turn when Player O goes first' do
+  it 'can give the current player turn when Player O goes first' do
     game_options = {
       first_player: :player_o
     }

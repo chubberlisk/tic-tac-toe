@@ -1,5 +1,5 @@
 class Game
-  attr_reader :grid, :player_turn
+  attr_accessor :grid, :player_turn
 
   def initialize(game_options)
     @player_turn = game_options[:first_player]

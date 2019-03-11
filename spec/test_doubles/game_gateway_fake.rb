@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameGatewayFake
   attr_accessor :saved_game
 

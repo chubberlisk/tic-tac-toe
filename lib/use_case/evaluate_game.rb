@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UseCase::EvaluateGame
   def initialize(game_gateway)
     @game_gateway = game_gateway
@@ -20,7 +22,8 @@ class UseCase::EvaluateGame
   private
 
   def win?(grid, marker)
-    horizontal_win?(grid, marker) || vertical_win?(grid, marker) || diagonal_win?(grid, marker)
+    horizontal_win?(grid, marker) || vertical_win?(grid, marker)\
+      || diagonal_win?(grid, marker)
   end
 
   def draw?(grid)

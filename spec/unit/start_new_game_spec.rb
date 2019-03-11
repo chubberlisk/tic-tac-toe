@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe UseCase::StartNewGame do
   let(:game_gateway) { GameGatewaySpy.new }
   let(:start_new_game) { UseCase::StartNewGame.new(game_gateway) }

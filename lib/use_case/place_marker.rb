@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UseCase::PlaceMarker
   InvalidMoveError = Class.new(RuntimeError)
   InvalidPositionError = Class.new(RuntimeError)

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Game
   attr_accessor :grid, :player_turn
 
-  def initialize(game_options = { first_player: :player_x })
-    @player_turn = game_options[:first_player]
+  def initialize(first_player: :player_x)
+    @player_turn = first_player
     @grid = [
       [nil, nil, nil],
       [nil, nil, nil],

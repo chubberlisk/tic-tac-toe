@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'Tic Tac Toe' do
@@ -81,7 +82,7 @@ describe 'Tic Tac Toe' do
 
     expect(take_turn_response[:grid]).to eq(
       [
-        [:x, :x, :x],
+        %i[x x x],
         [:o, :o, nil],
         [nil, nil, nil]
       ]
@@ -189,9 +190,9 @@ describe 'Tic Tac Toe' do
 
     expect(take_turn_response[:grid]).to eq(
       [
-        [:x, :o, :x],
-        [:o, :o, :x],
-        [:o, :x, :o]
+        %i[x o x],
+        %i[o o x],
+        %i[o x o]
       ]
     )
 

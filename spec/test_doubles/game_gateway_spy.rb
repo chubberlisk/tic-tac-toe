@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameGatewaySpy
   attr_reader :saved_game
 

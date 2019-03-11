@@ -1,4 +1,6 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 describe UseCase::EvaluateGame do
   let(:game_gateway) { GameGatewayStub.new }
@@ -6,9 +8,9 @@ describe UseCase::EvaluateGame do
   let(:game) { Game.new }
 
   context 'when Player X wins horizontally' do
-    it 'can win a game when player X has 3 in a row horizontally in the first row' do 
-       game.grid = [
-        [:x, :x, :x],
+    it 'can win a game when player X has 3 in a row horizontally in the first row' do
+      game.grid = [
+        %i[x x x],
         [:o, :o, nil],
         [nil, nil, nil]
       ]
@@ -20,10 +22,10 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
-    it 'can win a game when player X has 3 in a row horizontally in the second row' do 
+    it 'can win a game when player X has 3 in a row horizontally in the second row' do
       game.grid = [
         [:o, :o, nil],
-        [:x, :x, :x],
+        %i[x x x],
         [nil, nil, nil]
       ]
 
@@ -38,7 +40,7 @@ describe UseCase::EvaluateGame do
       game.grid = [
         [:o, :o, nil],
         [nil, nil, nil],
-        [:x, :x, :x]
+        %i[x x x]
       ]
 
       game_gateway.saved_game = game
@@ -50,9 +52,9 @@ describe UseCase::EvaluateGame do
   end
 
   context 'when Player O wins horizontally' do
-    it 'can win a game when player O has 3 in a row horizontally in the first row' do 
+    it 'can win a game when player O has 3 in a row horizontally in the first row' do
       game.grid = [
-        [:o, :o, :o],
+        %i[o o o],
         [:x, :x, nil],
         [nil, nil, nil]
       ]
@@ -64,10 +66,10 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
-    it 'can win a game when player O has 3 in a row horizontally in the second row' do 
+    it 'can win a game when player O has 3 in a row horizontally in the second row' do
       game.grid = [
         [:x, :x, nil],
-        [:o, :o, :o],
+        %i[o o o],
         [nil, nil, nil]
       ]
 
@@ -78,11 +80,11 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
-    it 'can win a game when player O has 3 in a row horizontally in the third row' do 
+    it 'can win a game when player O has 3 in a row horizontally in the third row' do
       game.grid = [
         [:x, :x, nil],
         [nil, nil, nil],
-        [:o, :o, :o]
+        %i[o o o]
       ]
 
       game_gateway.saved_game = game
@@ -94,9 +96,9 @@ describe UseCase::EvaluateGame do
   end
 
   context 'when Player X wins vertically' do
-    it 'can win a game when player X has 3 in a column vertically in the first column' do 
+    it 'can win a game when player X has 3 in a column vertically in the first column' do
       game.grid = [
-        [:x, :o, :o],
+        %i[x o o],
         [:x, nil, nil],
         [:x, nil, nil]
       ]
@@ -108,7 +110,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
-    it 'can win a game when player X has 3 in a column vertically in the second column' do 
+    it 'can win a game when player X has 3 in a column vertically in the second column' do
       game.grid = [
         [nil, :x, nil],
         [nil, :x, :o],
@@ -122,7 +124,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
-    it 'can win a game when player X has 3 in a column vertically in the last column' do 
+    it 'can win a game when player X has 3 in a column vertically in the last column' do
       game.grid = [
         [nil, nil, :x],
         [:o, nil, :x],
@@ -138,7 +140,7 @@ describe UseCase::EvaluateGame do
   end
 
   context 'when Player O wins vertically' do
-    it 'can win a game when player O has 3 in a column vertically in the first column' do 
+    it 'can win a game when player O has 3 in a column vertically in the first column' do
       game.grid = [
         [:o, nil, nil],
         [:o, :x, nil],
@@ -152,7 +154,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
-    it 'can win a game when player O has 3 in a column vertically in the second column' do 
+    it 'can win a game when player O has 3 in a column vertically in the second column' do
       game.grid = [
         [:x, :o, nil],
         [nil, :o, :x],
@@ -166,7 +168,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
-    it 'can win a game when player O has 3 in a column vertically in the third column' do 
+    it 'can win a game when player O has 3 in a column vertically in the third column' do
       game.grid = [
         [nil, :x, :o],
         [:x, nil, :o],
@@ -182,7 +184,7 @@ describe UseCase::EvaluateGame do
   end
 
   context 'when Player X wins diagonally' do
-    it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do 
+    it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do
       game.grid = [
         [:o, nil, :x],
         [nil, :x, nil],
@@ -196,7 +198,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
 
-    it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do 
+    it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do
       game.grid = [
         [:x, nil, nil],
         [nil, :x, :o],
@@ -212,7 +214,7 @@ describe UseCase::EvaluateGame do
   end
 
   context 'when Player O wins diagonally' do
-    it 'can win a game when player o has 3 in a row diagonally from bottom left to top right' do 
+    it 'can win a game when player o has 3 in a row diagonally from bottom left to top right' do
       game.grid = [
         [:x, nil, :o],
         [nil, :o, :x],
@@ -226,7 +228,7 @@ describe UseCase::EvaluateGame do
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
 
-    it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do 
+    it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do
       game.grid = [
         [:o, nil, :x],
         [:x, :o, nil],
@@ -242,9 +244,9 @@ describe UseCase::EvaluateGame do
 
     it 'can win a game on the games last turn' do
       game.grid = [
-        [:o, :o, :x],
-        [:x, :o, :o],
-        [:x, :o, :x]
+        %i[o o x],
+        %i[x o o],
+        %i[x o x]
       ]
 
       game_gateway.saved_game = game
@@ -258,7 +260,7 @@ describe UseCase::EvaluateGame do
   context 'when there is not a winner' do
     it 'can recognise when there is no horizontal win' do
       game.grid = [
-        [:x, :o, :x],
+        %i[x o x],
         [:o, :o, nil],
         [nil, nil, nil]
       ]
@@ -288,9 +290,9 @@ describe UseCase::EvaluateGame do
   context 'when there is a draw' do
     it 'can draw a game' do
       game.grid = [
-        [:x, :x, :o],
-        [:o, :o, :x],
-        [:x, :o, :x]
+        %i[x x o],
+        %i[o o x],
+        %i[x o x]
       ]
 
       game_gateway.saved_game = game
@@ -302,9 +304,9 @@ describe UseCase::EvaluateGame do
 
     it 'can draw a game for a different grid' do
       game.grid = [
-        [:x, :o, :o],
-        [:o, :x, :x],
-        [:o, :x, :o]
+        %i[x o o],
+        %i[o x x],
+        %i[o x o]
       ]
 
       game_gateway.saved_game = game

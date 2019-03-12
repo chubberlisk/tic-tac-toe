@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'terminal-table'
 require 'cli/ui'
 
@@ -7,6 +9,22 @@ class Ui::UiInterface
     open_frame('Tic Tac Toe')
   end
 
+  def ask(question:, options:)
+    CLI::UI::Prompt.ask(question) do |handler|
+      options.each do |option|
+        handler.option(option[:name]) { option[:value] }
+      end
+    end
+  end
+
+  def display_game_screen(response)
+    player = response[:player_turn] == :player_x ? 'Player X' : 'Player O'
+    add_divider("#{player} Turn")
+    puts create_terminal_table(response[:grid])
+    puts
+    puts format_error(response[:error].to_s) if response[:error]
+    puts
+  end
 
   def display_end_screen(response)
     add_divider('Game Over')
@@ -18,23 +36,6 @@ class Ui::UiInterface
       puts format_text('It\'s a draw!', 'yellow')
     end
     close_frame
-  end
-
-   def display_game_screen(response)
-    player = response[:player_turn] == :player_x ? 'Player X' : 'Player O'
-    add_divider("#{player} Turn")
-    puts create_terminal_table(response[:grid])
-    puts
-    puts format_error(response[:error].to_s) if response[:error]
-    puts
-  end
-
-  def ask(question:, options:)
-    CLI::UI::Prompt.ask(question) do |handler|
-      options.each do |option|
-        handler.option(option[:name]) { option[:value] }
-      end
-    end
   end
 
   private
@@ -68,6 +69,6 @@ class Ui::UiInterface
   end
 
   def format_error(text = '')
-    CLI::UI.fmt("{{x}} ") + format_text(text, 'red')
+    CLI::UI.fmt('{{x}} ') + format_text(text, 'red')
   end
 end

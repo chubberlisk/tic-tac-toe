@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Gateway::InMemoryGame
   attr_accessor :saved_game
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommandLineUi
   def initialize(start_new_game:, evaluate_game:, take_turn:, ui_interface:)
     @start_new_game = start_new_game
@@ -9,8 +11,8 @@ class CommandLineUi
   def execute
     question = 'Which player should go first?'
     options = [
-      { name: 'Player X', value: :player_x},
-      { name: 'Player O', value: :player_o}
+      { name: 'Player X', value: :player_x },
+      { name: 'Player O', value: :player_o }
     ]
     first_player = @ui_interface.ask(question: question, options: options)
 

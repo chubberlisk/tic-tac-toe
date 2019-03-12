@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'zeitwerk'
+
+loader = Zeitwerk::Loader.new
+loader.push_dir(__dir__ + '/../lib/')
+loader.setup
+
+game_gateway = Gateway::InMemoryGame.new
+start_new_game = UseCase::StartNewGame.new(game_gateway)
+evaluate_game = UseCase::EvaluateGame.new(game_gateway)
+take_turn = UseCase::TakeTurn.new(game_gateway)
+ui_interface = Ui::UiInterface.new
+
+command_line_ui = CommandLineUi.new(
+  start_new_game: start_new_game,
+  evaluate_game: evaluate_game,
+  take_turn: take_turn,
+  ui_interface: ui_interface
+)
+
+command_line_ui.execute

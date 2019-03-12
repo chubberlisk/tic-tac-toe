@@ -5,16 +5,34 @@ require 'cli/ui'
 
 class Ui::UiInterface
   def initialize
+    @turn_options = [
+      { name: 'Top Left', value: [0, 0] },
+      { name: 'Top Centre', value: [0, 1] },
+      { name: 'Top Right', value: [0, 2] },
+      { name: 'Centre Left', value: [1, 0] },
+      { name: 'Centre Centre', value: [1, 1] },
+      { name: 'Centre Right', value: [1, 2] },
+      { name: 'Bottom Left', value: [2, 0] },
+      { name: 'Bottom Centre', value: [2, 1] },
+      { name: 'Bottom Right', value: [2, 2] }    ]
     CLI::UI::StdoutRouter.enable
     open_frame('Tic Tac Toe')
   end
 
-  def ask(question:, options:)
-    CLI::UI::Prompt.ask(question) do |handler|
-      options.each do |option|
-        handler.option(option[:name]) { option[:value] }
-      end
-    end
+  def ask_user_for_first_player
+    question = 'Which player should go first?'
+    options = [
+      { name: 'Player X', value: :player_x },
+      { name: 'Player O', value: :player_o }
+    ]
+    ask(question: question, options: options)
+  end
+
+  def ask_user_for_position
+    question = 'Where thy place marker?'
+    response = ask(question: question, options: @turn_options)
+    @turn_options = @turn_options.reject { |option| option[:value] == response }
+    response
   end
 
   def display_game_screen(response)
@@ -39,6 +57,15 @@ class Ui::UiInterface
   end
 
   private
+
+  def ask(question:, options:)
+    CLI::UI::Prompt.ask(question) do |handler|
+      options.each do |option|
+        handler.option(option[:name]) { option[:value] }
+      end
+      handler.option('Quit') { exit }
+    end
+  end
 
   def open_frame(text = '')
     CLI::UI::Frame.open(text)

@@ -9,30 +9,12 @@ class CommandLineUi
   end
 
   def execute
-    question = 'Which player should go first?'
-    options = [
-      { name: 'Player X', value: :player_x },
-      { name: 'Player O', value: :player_o }
-    ]
-    first_player = @ui_interface.ask(question: question, options: options)
-
+    first_player = @ui_interface.ask_user_for_first_player
     start_new_game_response = @start_new_game.execute(first_player: first_player)
     @ui_interface.display_game_screen(start_new_game_response)
 
-    while @evaluate_game.execute({})[:outcome] == :continue
-      question = 'Where thy place marker?'
-      options = [
-        { name: 'Top Left', value: [0, 0] },
-        { name: 'Top Centre', value: [0, 1] },
-        { name: 'Top Right', value: [0, 2] },
-        { name: 'Centre Left', value: [1, 0] },
-        { name: 'Centre Centre', value: [1, 1] },
-        { name: 'Centre Right', value: [1, 2] },
-        { name: 'Bottom Left', value: [2, 0] },
-        { name: 'Bottom Centre', value: [2, 1] },
-        { name: 'Bottom Right', value: [2, 2] }
-      ]
-      position = @ui_interface.ask(question: question, options: options)
+    while @evaluate_game.execute({})[:outcome] == :continue 
+      position = @ui_interface.ask_user_for_position
       take_turn_response = @take_turn.execute(position: position)
       @ui_interface.display_game_screen(take_turn_response)
     end

@@ -7,3 +7,5 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'guard-rspec'
 gem 'rspec'
 gem 'zeitwerk'
+gem 'cli-ui'
+gem 'terminal-table'

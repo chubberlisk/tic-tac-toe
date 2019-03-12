@@ -1,11 +1,12 @@
 # frozen_string_literal: true
-require "spec_helper"
+
+require 'spec_helper'
 
 describe 'Tic Tac Toe' do
-  let(:grid_gateway) { GridGatewayFake.new }
-  let(:create_new_grid) { CreateNewGrid.new(grid_gateway) }
-  let(:view_grid) { ViewGrid.new(grid_gateway) }
-  let(:place_marker) { PlaceMarker.new(grid_gateway) }
+  let(:game_gateway) { GameGatewayFake.new }
+  let(:start_new_game) { UseCase::StartNewGame.new(game_gateway) }
+  let(:take_turn) { UseCase::TakeTurn.new(game_gateway) }
+  let(:evaluate_game) { UseCase::EvaluateGame.new(game_gateway) }
   let(:empty_grid) do
     [
       [nil, nil, nil],
@@ -14,565 +15,189 @@ describe 'Tic Tac Toe' do
     ]
   end
 
-  it 'can create and view a new grid' do
-    create_new_grid.execute({})
+  it 'can start a new game' do
+    game_options = { first_player: :player_x }
 
-    view_grid_response = view_grid.execute({})
+    response = start_new_game.execute(game_options)
 
-    expect(view_grid_response[:grid]).to eq(empty_grid)
+    expect(response[:grid]).to eq(empty_grid)
+    expect(response[:player_turn]).to eq(:player_x)
   end
 
-  context 'when grid has been created' do
-    before { grid_gateway.saved_grid = Grid.new }
+  it 'can take a turn' do
+    game_options = { first_player: :player_x }
+    start_new_game.execute(game_options)
 
-    it 'can place an X marker in a position on the grid' do
-      place_marker.execute(:x, [0, 0])
+    turn_options = { position: [0, 1] }
+    response = take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, nil]
-        ]
-      )
-    end
-
-    it 'can place an O marker in a position on the grid' do
-      place_marker.execute(:o, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, nil, :o]
-        ]
-      )
-    end
-
-    it 'can place an X and O marker in a position on the grid' do
-      place_marker.execute(:x, [0, 2])
-      place_marker.execute(:o, [1, 1])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, nil, :x],
-          [nil, :o, nil],
-          [nil, nil, nil]
-        ]
-      )
-    end
+    expect(response[:grid]).to eq(
+      [
+        [nil, :x, nil],
+        [nil, nil, nil],
+        [nil, nil, nil]
+      ]
+    )
+    expect(response[:player_turn]).to eq(:player_o)
   end
 
-  context 'when a player wins horizontally' do
-    let(:evaluate_grid) { EvaluateGrid.new(grid_gateway) }
+  it 'can take two turns' do
+    game_options = { first_player: :player_x }
+    start_new_game.execute(game_options)
 
-    before { grid_gateway.saved_grid = Grid.new }
+    turn_options = { position: [0, 1] }
+    take_turn.execute(turn_options)
 
-    it 'can win a game when player X has 3 in a row horizontally in the first row' do
-      place_marker.execute(:x, [0, 0])
-      place_marker.execute(:o, [1, 0])
-      place_marker.execute(:x, [0, 1])
-      place_marker.execute(:o, [1, 1])
-      place_marker.execute(:x, [0, 2])
+    turn_options = { position: [1, 1] }
+    response = take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, :x, :x],
-          [:o, :o, nil],
-          [nil, nil, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player X has 3 in a row horizontally in the second row' do
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, nil],
-          [:x, :x, :x],
-          [nil, nil, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player X has 3 in a row horizontally in the third row' do
-      place_marker.execute(:x, [2, 0])
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [2, 1])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, nil],
-          [nil, nil, nil],
-          [:x, :x, :x]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player O has 3 in a row horizontally in the first row' do
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [0, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, :o],
-          [:x, :x, nil],
-          [nil, nil, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
-
-    it 'can win a game when player O has 3 in a row horizontally in the second row' do
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, nil],
-          [:x, :x, :x],
-          [nil, nil, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player O has 3 in a row horizontally in the third row' do
-      place_marker.execute(:x, [2, 0])
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [2, 1])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, nil],
-          [nil, nil, nil],
-          [:x, :x, :x]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can recognise when there is no horizontal win' do
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [2, 1])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :o, nil],
-          [nil, nil, nil],
-          [nil, :x, :x]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:continue)
-    end
+    expect(response[:grid]).to eq(
+      [
+        [nil, :x, nil],
+        [nil, :o, nil],
+        [nil, nil, nil]
+      ]
+    )
+    expect(response[:player_turn]).to eq(:player_x)
   end
 
-  context 'when a player wins vertically' do
-    let(:evaluate_grid) { EvaluateGrid.new(grid_gateway) }
+  it 'can win a game when a player has 3 in a row horizontally' do
+    game_options = { first_player: :player_x }
+    start_new_game.execute(game_options)
 
-    before { grid_gateway.saved_grid = Grid.new }
+    turn_options = { position: [0, 0] }
+    take_turn.execute(turn_options)
 
-    it 'can win a game when player X has 3 in a row vertically in the first column' do
-      place_marker.execute(:x, [0, 0])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [0, 2])
-      place_marker.execute(:x, [2, 0])
+    turn_options = { position: [1, 0] }
+    take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
+    turn_options = { position: [0, 1] }
+    take_turn.execute(turn_options)
 
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, :o, :o],
-          [:x, nil, nil],
-          [:x, nil, nil]
-        ]
-      )
+    turn_options = { position: [1, 1] }
+    take_turn.execute(turn_options)
 
-      evaluate_grid_response = evaluate_grid.execute({})
+    turn_options = { position: [0, 2] }
+    take_turn_response = take_turn.execute(turn_options)
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
+    expect(take_turn_response[:grid]).to eq(
+      [
+        %i[x x x],
+        [:o, :o, nil],
+        [nil, nil, nil]
+      ]
+    )
 
-    it 'can win a game when player X has 3 in a row vertically in the second column' do
-      place_marker.execute(:x, [0, 1])
-      place_marker.execute(:o, [1, 0])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [2, 0])
-      place_marker.execute(:x, [2, 1])
+    evaluate_game_response = evaluate_game.execute({})
 
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, :x, nil],
-          [:o, :x, nil],
-          [:o, :x, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player X has 3 in a row vertically in the third column' do
-      place_marker.execute(:x, [0, 2])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 2])
-      place_marker.execute(:o, [2, 0])
-      place_marker.execute(:x, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, :o, :x],
-          [nil, nil, :x],
-          [:o, nil, :x]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player O has 3 in a row horizontally in the first column' do
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [0, 1])
-      place_marker.execute(:o, [1, 0])
-      place_marker.execute(:x, [2, 1])
-      place_marker.execute(:o, [2, 0])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :x, nil],
-          [:o, nil, nil],
-          [:o, :x, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
-
-    it 'can win a game when player O has 3 in a row vertically in the second column' do
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [1, 1])
-      place_marker.execute(:x, [1, 2])
-      place_marker.execute(:o, [2, 1])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, :o, nil],
-          [:x, :o, :x],
-          [nil, :o, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
-
-    it 'can win a game when player O has 3 in a row vertically in the third column' do
-      place_marker.execute(:o, [0, 2])
-      place_marker.execute(:x, [0, 1])
-      place_marker.execute(:o, [1, 2])
-      place_marker.execute(:x, [2, 0])
-      place_marker.execute(:o, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, :x, :o],
-          [nil, nil, :o],
-          [:x, nil, :o]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
-
-    it 'can recognise when there is no vertical win' do
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [0, 1])
-      place_marker.execute(:o, [1, 2])
-      place_marker.execute(:x, [2, 1])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, :x, nil],
-          [nil, nil, :o],
-          [nil, :x, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:continue)
-    end
+    expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
   end
 
-  context 'when a player wins diagonally' do
-    let(:evaluate_grid) { EvaluateGrid.new(grid_gateway) }
+  it 'can win a game when a player has 3 in a row vertically' do
+    game_options = { first_player: :player_o }
+    start_new_game.execute(game_options)
 
-    before { grid_gateway.saved_grid = Grid.new }
+    turn_options = { position: [0, 1] }
+    take_turn.execute(turn_options)
 
-    it 'can win a game when player X has 3 in a row diagonally from bottom left to top right' do
-      place_marker.execute(:x, [2, 0])
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [1, 2])
-      place_marker.execute(:x, [0, 2])
+    turn_options = { position: [1, 0] }
+    take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
+    turn_options = { position: [1, 1] }
+    take_turn.execute(turn_options)
 
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, nil, :x],
-          [nil, :x, :o],
-          [:x, nil, nil]
-        ]
-      )
+    turn_options = { position: [0, 2] }
+    take_turn.execute(turn_options)
 
-      evaluate_grid_response = evaluate_grid.execute({})
+    turn_options = { position: [2, 1] }
+    take_turn_response = take_turn.execute(turn_options)
 
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
+    expect(take_turn_response[:grid]).to eq(
+      [
+        [nil, :o, :x],
+        [:x, :o, nil],
+        [nil, :o, nil]
+      ]
+    )
 
-    it 'can win a game when player X has 3 in a row diagonally from top left to bottom right' do
-      place_marker.execute(:x, [0, 0])
-      place_marker.execute(:o, [1, 0])
-      place_marker.execute(:x, [1, 1])
-      place_marker.execute(:o, [2, 0])
-      place_marker.execute(:x, [2, 2])
+    evaluate_game_response = evaluate_game.execute({})
 
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, nil, nil],
-          [:o, :x, nil],
-          [:o, nil, :x]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_x_win)
-    end
-
-    it 'can win a game when player O has 3 in a row diagonally from bottom left to top right' do
-      place_marker.execute(:o, [2, 0])
-      place_marker.execute(:x, [0, 0])
-      place_marker.execute(:o, [1, 1])
-      place_marker.execute(:x, [1, 2])
-      place_marker.execute(:o, [0, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, nil, :o],
-          [nil, :o, :x],
-          [:o, nil, nil]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
-
-    it 'can win a game when player O has 3 in a row diagonally from top left to bottom right' do
-      place_marker.execute(:o, [0, 0])
-      place_marker.execute(:x, [1, 0])
-      place_marker.execute(:o, [1, 1])
-      place_marker.execute(:x, [0, 2])
-      place_marker.execute(:o, [2, 2])
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:o, nil, :x],
-          [:x, :o, nil],
-          [nil, nil, :o]
-        ]
-      )
-
-      evaluate_grid_response = evaluate_grid.execute({})
-
-      expect(evaluate_grid_response[:outcome]).to eq(:player_o_win)
-    end
+    expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
   end
 
-  context 'when an error is raised' do
-    before { grid_gateway.saved_grid = Grid.new }
+  it 'can win a game when a player has 3 in a row diagonally' do
+    game_options = { first_player: :player_x }
+    start_new_game.execute(game_options)
 
-    it 'cannot place a marker in a position that already has a marker' do
-      place_marker.execute(:x, [2, 1])
+    turn_options = { position: [0, 0] }
+    take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
+    turn_options = { position: [0, 1] }
+    take_turn.execute(turn_options)
 
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, :x, nil]
-        ]
-      )
+    turn_options = { position: [1, 1] }
+    take_turn.execute(turn_options)
 
-      expect { place_marker.execute(:o, [2, 1]) }.to raise_error(PlaceMarker::InvalidMoveError)
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [nil, nil, nil],
-          [nil, nil, nil],
-          [nil, :x, nil]
-        ]
-      )
-    end
+    turn_options = { position: [2, 0] }
+    take_turn.execute(turn_options)
 
-    it 'cannot place a marker in a position that is outside the grid' do
-      expect { place_marker.execute(:o, [-6, 1]) }.to raise_error(PlaceMarker::InvalidPositionError)
+    turn_options = { position: [2, 2] }
+    take_turn_response = take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
+    expect(take_turn_response[:grid]).to eq(
+      [
+        [:x, :o, nil],
+        [nil, :x, nil],
+        [:o, nil, :x]
+      ]
+    )
 
-      expect(view_grid_response[:grid]).to eq(empty_grid)
+    evaluate_game_response = evaluate_game.execute({})
 
-      expect { place_marker.execute(:o, [3, 0]) }.to raise_error(PlaceMarker::InvalidPositionError)
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(empty_grid)
-
-      expect { place_marker.execute(:o, [2, -3]) }.to raise_error(PlaceMarker::InvalidPositionError)
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(empty_grid)
-
-      expect { place_marker.execute(:o, [2, 7]) }.to raise_error(PlaceMarker::InvalidPositionError)
-
-      view_grid_response = view_grid.execute({})
-
-      expect(view_grid_response[:grid]).to eq(empty_grid)
-    end
-
-    it 'can alert Player X that it is not their turn to place a marker' do
-      place_marker.execute(:x, [1, 1])
-      expect { place_marker.execute(:x, [0, 1]) }.to raise_error(PlaceMarker::InvalidTurnError)
-    end
-
-    it 'can alert Player O that it is not their turn to place a marker' do
-      place_marker.execute(:o, [2, 2])
-      expect { place_marker.execute(:o, [0, 0]) }.to raise_error(PlaceMarker::InvalidTurnError)
-    end
+    expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
   end
 
-  context 'when the players draw' do
-    let(:evaluate_grid) { EvaluateGrid.new(grid_gateway) }
+  it 'can draw a game when no player has won' do
+    game_options = { first_player: :player_o }
+    start_new_game.execute(game_options)
 
-    before { grid_gateway.saved_grid = Grid.new }
+    turn_options = { position: [0, 1] }
+    take_turn.execute(turn_options)
 
-    it 'can draw a game when no player has won' do
-      place_marker.execute(:x, [0, 0])
-      place_marker.execute(:o, [0, 1])
-      place_marker.execute(:x, [0, 2])
-      place_marker.execute(:o, [1, 0])
-      place_marker.execute(:x, [1, 2])
-      place_marker.execute(:o, [1, 1])
-      place_marker.execute(:x, [2, 0])
-      place_marker.execute(:o, [2, 2])
-      place_marker.execute(:x, [2, 1])
+    turn_options = { position: [0, 0] }
+    take_turn.execute(turn_options)
 
-      view_grid_response = view_grid.execute({})
+    turn_options = { position: [1, 0] }
+    take_turn.execute(turn_options)
 
-      expect(view_grid_response[:grid]).to eq(
-        [
-          [:x, :o, :x],
-          [:o, :o, :x],
-          [:x, :x, :o]
-        ]
-      )
+    turn_options = { position: [0, 2] }
+    take_turn.execute(turn_options)
 
-      evaluate_grid_response = evaluate_grid.execute({})
+    turn_options = { position: [1, 1] }
+    take_turn.execute(turn_options)
 
-      expect(evaluate_grid_response[:outcome]).to eq(:draw)
-    end
+    turn_options = { position: [2, 1] }
+    take_turn.execute(turn_options)
+
+    turn_options = { position: [2, 0] }
+    take_turn.execute(turn_options)
+
+    turn_options = { position: [1, 2] }
+    take_turn.execute(turn_options)
+
+    turn_options = { position: [2, 2] }
+    take_turn_response = take_turn.execute(turn_options)
+
+    expect(take_turn_response[:grid]).to eq(
+      [
+        %i[x o x],
+        %i[o o x],
+        %i[o x o]
+      ]
+    )
+
+    evaluate_game_response = evaluate_game.execute({})
+
+    expect(evaluate_game_response[:outcome]).to eq(:draw)
   end
 end

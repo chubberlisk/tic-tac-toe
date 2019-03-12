@@ -14,7 +14,8 @@ class Ui::UiInterface
       { name: 'Centre Right', value: [1, 2] },
       { name: 'Bottom Left', value: [2, 0] },
       { name: 'Bottom Centre', value: [2, 1] },
-      { name: 'Bottom Right', value: [2, 2] }    ]
+      { name: 'Bottom Right', value: [2, 2] }
+    ]
     CLI::UI::StdoutRouter.enable
     open_frame('Tic Tac Toe')
   end
@@ -63,12 +64,11 @@ class Ui::UiInterface
       options.each do |option|
         handler.option(option[:name]) { option[:value] }
       end
-      handler.option('Quit') { exit }
+      handler.option('Quit') do
+        close_frame
+        exit
+      end
     end
-  end
-
-  def open_frame(text = '')
-    CLI::UI::Frame.open(text)
   end
 
   def create_terminal_table(grid)
@@ -81,6 +81,10 @@ class Ui::UiInterface
         t.add_separator if i + 1 < temp_grid.length
       end
     end
+  end
+
+  def open_frame(text = '')
+    CLI::UI::Frame.open(text)
   end
 
   def close_frame(text = '')

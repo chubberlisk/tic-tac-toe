@@ -13,7 +13,7 @@ class CommandLineUi
     start_new_game_response = @start_new_game.execute(first_player: first_player)
     @ui_interface.display_game_screen(start_new_game_response)
 
-    while @evaluate_game.execute({})[:outcome] == :continue 
+    while @evaluate_game.execute({})[:outcome] == :continue
       position = @ui_interface.ask_user_for_position
       take_turn_response = @take_turn.execute(position: position)
       @ui_interface.display_game_screen(take_turn_response)

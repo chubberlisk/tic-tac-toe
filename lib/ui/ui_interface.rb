@@ -3,7 +3,7 @@
 require 'terminal-table'
 require 'cli/ui'
 
-class Ui::UiInterface
+class UI::UiInterface
   def initialize
     @turn_options = [
       { name: 'Top Left', value: [0, 0] },
@@ -17,7 +17,7 @@ class Ui::UiInterface
       { name: 'Bottom Right', value: [2, 2] }
     ]
     CLI::UI::StdoutRouter.enable
-    open_frame('Tic Tac Toe')
+    CLI::UI::Frame.open('Tic Tac Toe')
   end
 
   def ask_user_for_first_player
@@ -38,23 +38,22 @@ class Ui::UiInterface
 
   def display_game_screen(response)
     player = response[:player_turn] == :player_x ? 'Player X' : 'Player O'
-    add_divider("#{player} Turn")
-    puts create_terminal_table(response[:grid])
-    puts
-    puts format_error(response[:error].to_s) if response[:error]
+    CLI::UI::Frame.divider("#{player} Turn")
+    grid = convert_marker_symbols_to_strings(response[:grid])
+    puts create_terminal_table(grid)
     puts
   end
 
   def display_end_screen(response)
-    add_divider('Game Over')
+    CLI::UI::Frame.divider('Game Over')
     if response[:outcome] == :player_x_win
       puts format_text('Player X wins!', 'green')
     elsif response[:outcome] == :player_o_win
       puts format_text('Player O wins!', 'green')
     else
-      puts format_text('It\'s a draw!', 'yellow')
+      puts format_text('It\'s a draw!', 'magenta')
     end
-    close_frame
+    CLI::UI::Frame.close('')
   end
 
   private
@@ -65,41 +64,36 @@ class Ui::UiInterface
         handler.option(option[:name]) { option[:value] }
       end
       handler.option('Quit') do
-        close_frame
+        CLI::UI::Frame.close('')
         exit
       end
     end
   end
 
-  def create_terminal_table(grid)
-    temp_grid = grid.map do |row|
-      row.map { |x| x || ' ' }
-    end
-    Terminal::Table.new do |t|
-      temp_grid.each_with_index do |row, i|
-        t.add_row(row)
-        t.add_separator if i + 1 < temp_grid.length
+  def convert_marker_symbols_to_strings(grid)
+    grid.map do |row|
+      row.map do |marker|
+        if marker == :x
+          format_text(marker.upcase, 'red')
+        elsif marker == :o
+          format_text(marker.upcase, 'yellow')
+        else
+          ' '
+        end
       end
     end
   end
 
-  def open_frame(text = '')
-    CLI::UI::Frame.open(text)
+  def create_terminal_table(grid)
+    Terminal::Table.new do |t|
+      grid.each.with_index(1) do |row, i|
+        t.add_row(row)
+        t.add_separator if i < grid.length
+      end
+    end
   end
 
-  def close_frame(text = '')
-    CLI::UI::Frame.close(text)
-  end
-
-  def add_divider(text = '')
-    CLI::UI::Frame.divider(text)
-  end
-
-  def format_text(text = '', colour)
+  def format_text(text, colour)
     CLI::UI.fmt("{{#{colour}:#{text}}}")
-  end
-
-  def format_error(text = '')
-    CLI::UI.fmt('{{x}} ') + format_text(text, 'red')
   end
 end

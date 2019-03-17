@@ -8,6 +8,8 @@ class CustomInflector < Zeitwerk::Inflector
     case basename
     when 'ui'
       'UI'
+    when 'cli'
+      'CLI'
     else
       super
     end
@@ -23,13 +25,13 @@ game_gateway = Gateway::InMemoryGame.new
 start_new_game = UseCase::StartNewGame.new(game_gateway)
 evaluate_game = UseCase::EvaluateGame.new(game_gateway)
 take_turn = UseCase::TakeTurn.new(game_gateway)
-ui_interface = UI::UiInterface.new
+cli = UI::CLI.new
 
-command_line_ui = CommandLineUi.new(
+ui_presenter = UI::Presenter.new(
   start_new_game: start_new_game,
   evaluate_game: evaluate_game,
   take_turn: take_turn,
-  ui_interface: ui_interface
+  user_interface: cli
 )
 
-command_line_ui.execute
+ui_presenter.execute

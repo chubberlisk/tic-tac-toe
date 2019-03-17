@@ -3,15 +3,27 @@
 
 require 'zeitwerk'
 
+class CustomInflector < Zeitwerk::Inflector
+  def camelize(basename, _abspath)
+    case basename
+    when 'ui'
+      'UI'
+    else
+      super
+    end
+  end
+end
+
 loader = Zeitwerk::Loader.new
 loader.push_dir(__dir__ + '/../lib/')
+loader.inflector = CustomInflector.new
 loader.setup
 
 game_gateway = Gateway::InMemoryGame.new
 start_new_game = UseCase::StartNewGame.new(game_gateway)
 evaluate_game = UseCase::EvaluateGame.new(game_gateway)
 take_turn = UseCase::TakeTurn.new(game_gateway)
-ui_interface = Ui::UiInterface.new
+ui_interface = UI::UiInterface.new
 
 command_line_ui = CommandLineUi.new(
   start_new_game: start_new_game,

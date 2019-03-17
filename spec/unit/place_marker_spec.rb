@@ -5,7 +5,7 @@ require 'spec_helper'
 describe UseCase::PlaceMarker do
   let(:game_gateway) { GameGatewayFake.new }
   let(:place_marker) { UseCase::PlaceMarker.new }
-  let(:game) { Game.new }
+  let(:game) { Domain::Game.new }
   let(:options) do
     {
       player_turn: game.player_turn,

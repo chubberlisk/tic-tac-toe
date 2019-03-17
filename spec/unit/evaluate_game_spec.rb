@@ -5,7 +5,7 @@ require 'spec_helper'
 describe UseCase::EvaluateGame do
   let(:game_gateway) { GameGatewayStub.new }
   let(:evaluate_game) { UseCase::EvaluateGame.new(game_gateway) }
-  let(:game) { Game.new }
+  let(:game) { Domain::Game.new }
 
   context 'when Player X wins horizontally' do
     it 'can win a game when player X has 3 in a row horizontally in the first row' do

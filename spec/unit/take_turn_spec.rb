@@ -6,7 +6,7 @@ describe UseCase::TakeTurn do
       first_player: :player_x
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
@@ -31,7 +31,7 @@ describe UseCase::TakeTurn do
       first_player: :player_o
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
@@ -56,7 +56,7 @@ describe UseCase::TakeTurn do
       first_player: :player_x
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
@@ -77,7 +77,7 @@ describe UseCase::TakeTurn do
       first_player: :player_o
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
@@ -98,7 +98,7 @@ describe UseCase::TakeTurn do
       first_player: :player_o
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
@@ -119,7 +119,7 @@ describe UseCase::TakeTurn do
       first_player: :player_o
     }
 
-    game = Game.new(game_options)
+    game = Domain::Game.new(game_options)
 
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game
+class Domain::Game
   attr_accessor :grid, :player_turn
 
   def initialize(first_player: :player_x)

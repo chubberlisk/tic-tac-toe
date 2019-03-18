@@ -14,5 +14,9 @@ class UserInterface::Presenter
     position = @ui.ask_user_for_position
     take_turn_response = @take_turn.execute(position: position)
     @ui.display_turn(take_turn_response)
+
+    position = @ui.ask_user_for_position
+    take_turn_response = @take_turn.execute(position: position)
+    @ui.display_turn(take_turn_response)
   end
 end

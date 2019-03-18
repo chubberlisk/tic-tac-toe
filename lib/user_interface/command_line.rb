@@ -3,7 +3,7 @@
 require 'terminal-table'
 require 'cli/ui'
 
-class UI::CLI
+class UserInterface::CommandLine
   def initialize
     @turn_options = [
       { name: 'Top Left', value: [0, 0] },

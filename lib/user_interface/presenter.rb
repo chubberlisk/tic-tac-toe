@@ -10,5 +10,9 @@ class UserInterface::Presenter
     first_player = @ui.ask_user_for_first_player
     start_new_game_response = @start_new_game.execute(first_player: first_player)
     @ui.display_turn(start_new_game_response)
+
+    position = @ui.ask_user_for_position
+    take_turn_response = @take_turn.execute(position: position)
+    @ui.display_turn(take_turn_response)
   end
 end

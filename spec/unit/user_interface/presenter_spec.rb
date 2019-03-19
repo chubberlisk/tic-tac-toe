@@ -1,16 +1,18 @@
 describe UserInterface::Presenter do
-  class CommandLineFoo
-    attr_reader :display_turn_calls, :display_turn_arguments, :ask_user_for_position_calls
+  class CommandLineSpy
+    attr_reader :display_turn_calls, :display_turn_arguments, :ask_user_for_position_calls, :display_game_over_arguments
 
     def initialize
-      @ask_user_for_first_player_calls = 0
+      @ask_user_for_first_player_called = false
       @display_turn_calls = 0
       @display_turn_arguments = []
       @ask_user_for_position_calls = 0
+      @display_game_over_called = false
     end
 
     def ask_user_for_first_player
       @ask_user_for_first_player_called = true
+
       :ask_user_for_first_player_response
     end
 
@@ -28,14 +30,22 @@ describe UserInterface::Presenter do
 
       :ask_user_for_position_response
     end
+
+    def display_game_over(response)
+      @display_game_over_called = true
+      @display_game_over_arguments = response
+    end
+
+    def display_game_over_called?
+      @display_game_over_called
+    end
   end
 
-  class StartNewGameFoo
+  class StartNewGameSpy
     attr_reader :execute_arguments
 
     def initialize
       @execute_called = false
-      @execute_arguments = nil
     end
 
     def execute(game_options)
@@ -50,7 +60,7 @@ describe UserInterface::Presenter do
     end
   end
 
-  class TakeTurnFoo
+  class TakeTurnSpy
     attr_reader :execute_calls, :execute_arguments
 
     def initialize
@@ -66,86 +76,128 @@ describe UserInterface::Presenter do
     end
   end
 
-  let(:command_line) { CommandLineFoo.new }
-  let(:start_new_game) { StartNewGameFoo.new }
-  let(:take_turn) { TakeTurnFoo.new }
+  class EvaluateGameSpy
+    attr_reader :execute_calls
+    attr_writer :outcomes
+
+    def initialize
+      @execute_calls = 0
+      @outcomes = []
+    end
+
+    def execute(*)
+      outcome = @outcomes[@execute_calls]
+      @execute_calls += 1
+
+      { outcome: outcome }
+    end
+  end
+
+  let(:command_line) { CommandLineSpy.new }
+  let(:start_new_game) { StartNewGameSpy.new }
+  let(:take_turn) { TakeTurnSpy.new }
+  let(:evaluate_game) { EvaluateGameSpy.new }
   let(:ui_presenter) do
     UserInterface::Presenter.new(
+      user_interface: command_line,
       start_new_game: start_new_game,
       take_turn: take_turn,
-      evaluate_game: nil,
-      user_interface: command_line
+      evaluate_game: evaluate_game
     )
   end
 
-  it 'can ask the user for the first player' do
-    ui_presenter.execute({})
+  context 'when no turn is taken' do
+    before { ui_presenter.execute({}) }
 
-    expect(command_line.ask_user_for_first_player_called?).to eq(true)
+    it 'can ask the user for the first player' do
+      expect(command_line.ask_user_for_first_player_called?).to eq(true)
+    end
+
+    it 'can start a new game' do
+      expect(start_new_game.execute_called?).to eq(true)
+      expect(start_new_game.execute_arguments).to eq(
+        { first_player: :ask_user_for_first_player_response }
+      )
+    end
+
+    it 'can display the first turn' do
+      expect(command_line.display_turn_calls).to eq(1)
+      expect(command_line.display_turn_arguments).to include(
+        :start_new_game_response
+      )
+    end
   end
 
-  it 'can start a new game' do
-    ui_presenter.execute({})
+  context 'when only one turn is taken' do
+    before do
+      evaluate_game.outcomes = [:continue, nil]
 
-    expect(start_new_game.execute_called?).to eq(true)
-    expect(start_new_game.execute_arguments).to eq(
-      first_player: :ask_user_for_first_player_response
-    )
+      ui_presenter.execute({})
+    end
+
+    it 'can ask the user for a position' do
+      expect(command_line.ask_user_for_position_calls).to eq(1)
+    end
+
+    it 'can take a turn' do
+      expect(take_turn.execute_calls).to eq(1)
+      expect(take_turn.execute_arguments).to contain_exactly(
+        { position: :ask_user_for_position_response }
+      )
+    end
+
+    it 'can display a turn' do
+      expect(command_line.display_turn_calls).to eq(2)
+      expect(command_line.display_turn_arguments).to contain_exactly(
+        :start_new_game_response,
+        :take_turn_response
+      )
+    end
   end
 
-  it 'can display the first turn' do
-    ui_presenter.execute({})
+  context 'when multiple turns are taken while game has not ended' do
+    before do
+      evaluate_game.outcomes = [:continue, :continue, nil]
 
-    expect(command_line.display_turn_calls).to be >= 1
-    expect(command_line.display_turn_arguments[0]).to eq(
-      :start_new_game_response
-    )
+      ui_presenter.execute({})
+    end
+
+    it 'can ask the user for another position' do
+      expect(command_line.ask_user_for_position_calls).to eq(2)
+    end
+
+    it 'can take another turn' do
+      expect(take_turn.execute_calls).to eq(2)
+      expect(take_turn.execute_arguments).to contain_exactly(
+        { position: :ask_user_for_position_response },
+        { position: :ask_user_for_position_response }
+      )
+    end
+
+    it 'can display another turn' do
+      expect(command_line.display_turn_calls).to eq(3)
+      expect(command_line.display_turn_arguments).to contain_exactly(
+        :start_new_game_response,
+        :take_turn_response,
+        :take_turn_response
+      )
+    end
   end
 
-  it 'can ask the user for a position' do
-    ui_presenter.execute({})
+  context 'when game has ended after multiple turns' do
+    before do
+      evaluate_game.outcomes = [:continue, :continue, :continue, nil]
 
-    expect(command_line.ask_user_for_position_calls).to be >= 1
-  end
+      ui_presenter.execute({})
+    end
 
-  it 'can take a turn' do
-    ui_presenter.execute({})
+    it 'can evaluate the final result of the game' do
+      expect(evaluate_game.execute_calls).to eq(5)
+    end
 
-    expect(take_turn.execute_calls).to be >= 1
-    expect(take_turn.execute_arguments[0]).to eq(
-      position: :ask_user_for_position_response
-    )
-  end
-
-  it 'can display a turn' do
-    ui_presenter.execute({})
-
-    expect(command_line.display_turn_calls).to be >= 2
-    expect(command_line.display_turn_arguments[1]).to eq(:take_turn_response)
-  end
-
-  it 'can ask the user for a position' do
-    ui_presenter.execute({})
-
-    expect(command_line.ask_user_for_position_calls).to be >= 2
-  end
-
-  it 'can take another turn' do
-    ui_presenter.execute({})
-
-    expect(take_turn.execute_calls).to be >= 2
-    expect(take_turn.execute_arguments[1]).to eq(
-      position: :ask_user_for_position_response
-    )
-  end
-
-  it 'can display another turn' do
-    ui_presenter.execute({})
-
-    expect(command_line.display_turn_calls).to be >= 3
-    expect(command_line.display_turn_arguments[2]).to eq(:take_turn_response)
-  end
-
-  xit 'can take a turn while the game has not ended' do
+    it 'can display game over' do
+      expect(command_line.display_game_over_called?).to eq(true)
+      expect(command_line.display_game_over_arguments).to eq(outcome: nil)
+    end
   end
 end

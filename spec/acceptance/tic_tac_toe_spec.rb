@@ -89,7 +89,7 @@ describe 'Tic Tac Toe' do
       ]
     )
 
-    evaluate_game_response = evaluate_game.execute({})
+    evaluate_game_response = evaluate_game.execute
 
     expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
   end
@@ -121,7 +121,7 @@ describe 'Tic Tac Toe' do
       ]
     )
 
-    evaluate_game_response = evaluate_game.execute({})
+    evaluate_game_response = evaluate_game.execute
 
     expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
   end
@@ -153,7 +153,7 @@ describe 'Tic Tac Toe' do
       ]
     )
 
-    evaluate_game_response = evaluate_game.execute({})
+    evaluate_game_response = evaluate_game.execute
 
     expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
   end
@@ -197,7 +197,7 @@ describe 'Tic Tac Toe' do
       ]
     )
 
-    evaluate_game_response = evaluate_game.execute({})
+    evaluate_game_response = evaluate_game.execute
 
     expect(evaluate_game_response[:outcome]).to eq(:draw)
   end

@@ -5,7 +5,7 @@ class UseCase::EvaluateGame
     @game_gateway = game_gateway
   end
 
-  def execute(*)
+  def execute
     game = @game_gateway.retrieve
     grid = game.grid
 

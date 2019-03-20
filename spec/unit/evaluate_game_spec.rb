@@ -17,7 +17,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -31,7 +31,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -45,7 +45,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -61,7 +61,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -75,7 +75,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -89,7 +89,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -105,7 +105,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -119,7 +119,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -133,7 +133,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -149,7 +149,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -163,7 +163,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -177,7 +177,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -193,7 +193,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -207,7 +207,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_x_win)
     end
@@ -223,7 +223,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -237,7 +237,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -251,7 +251,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:player_o_win)
     end
@@ -267,7 +267,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:continue)
     end
@@ -281,7 +281,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:continue)
     end
@@ -297,7 +297,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:draw)
     end
@@ -311,7 +311,7 @@ describe UseCase::EvaluateGame do
 
       game_gateway.saved_game = game
 
-      evaluate_game_response = evaluate_game.execute({})
+      evaluate_game_response = evaluate_game.execute
 
       expect(evaluate_game_response[:outcome]).to eq(:draw)
     end

@@ -36,7 +36,7 @@ class UserInterface::CommandLine
     response
   end
 
-  def display_game_screen(response)
+  def display_turn(response)
     player = response[:player_turn] == :player_x ? 'Player X' : 'Player O'
     CLI::UI::Frame.divider("#{player} Turn")
     grid = convert_marker_symbols_to_strings(response[:grid])
@@ -44,7 +44,7 @@ class UserInterface::CommandLine
     puts
   end
 
-  def display_end_screen(response)
+  def display_game_over(response)
     CLI::UI::Frame.divider('Game Over')
     if response[:outcome] == :player_x_win
       puts format_text('Player X wins!', 'green')

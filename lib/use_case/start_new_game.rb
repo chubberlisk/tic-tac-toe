@@ -5,8 +5,8 @@ class UseCase::StartNewGame
     @game_gateway = game_gateway
   end
 
-  def execute(game_options)
-    game = Domain::Game.new(game_options)
+  def execute(options)
+    game = Domain::Game.new(options)
 
     @game_gateway.save(game)
 

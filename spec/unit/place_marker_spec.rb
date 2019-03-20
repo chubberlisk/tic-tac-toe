@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 describe UseCase::PlaceMarker do
-  let(:game_gateway) { GameGatewayFake.new }
   let(:place_marker) { UseCase::PlaceMarker.new }
   let(:game) { Domain::Game.new }
   let(:options) do
@@ -21,14 +20,12 @@ describe UseCase::PlaceMarker do
     ]
   end
 
-  before { game_gateway.saved_game = game }
-
   it 'can place X marker at (2, 1) on the grid' do
     options[:position] = [2, 1]
 
-    place_marker.execute(options)
+    response = place_marker.execute(options)
 
-    expect(game_gateway.saved_game.grid).to eq(
+    expect(response[:grid]).to eq(
       [
         [nil, nil, nil],
         [nil, nil, nil],
@@ -40,9 +37,9 @@ describe UseCase::PlaceMarker do
   it 'can place X marker at (0, 1) on the grid' do
     options[:position] = [0, 1]
 
-    place_marker.execute(options)
+    response = place_marker.execute(options)
 
-    expect(game_gateway.saved_game.grid).to eq(
+    expect(response[:grid]).to eq(
       [
         [nil, :x, nil],
         [nil, nil, nil],
@@ -55,9 +52,9 @@ describe UseCase::PlaceMarker do
     options[:player_turn] = :player_o
     options[:position] = [0, 0]
 
-    place_marker.execute(options)
+    response = place_marker.execute(options)
 
-    expect(game_gateway.saved_game.grid).to eq(
+    expect(response[:grid]).to eq(
       [
         [:o, nil, nil],
         [nil, nil, nil],
@@ -70,9 +67,9 @@ describe UseCase::PlaceMarker do
     options[:player_turn] = :player_o
     options[:position] = [2, 2]
 
-    place_marker.execute(options)
+    response = place_marker.execute(options)
 
-    expect(game_gateway.saved_game.grid).to eq(
+    expect(response[:grid]).to eq(
       [
         [nil, nil, nil],
         [nil, nil, nil],

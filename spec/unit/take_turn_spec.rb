@@ -11,7 +11,8 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [1, 0]
@@ -36,7 +37,8 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [2, 2]
@@ -61,7 +63,8 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [1, 0]
@@ -82,7 +85,8 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [1, 0]
@@ -103,7 +107,8 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [100, 0]
@@ -124,13 +129,14 @@ describe UseCase::TakeTurn do
     game_gateway = GameGatewayFake.new
     game_gateway.saved_game = game
 
-    take_turn = UseCase::TakeTurn.new(game_gateway)
+    place_marker = UseCase::PlaceMarker.new
+    take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 
     turn_options = {
       position: [1, 0]
     }
 
-    response = take_turn.execute(turn_options)
+    take_turn.execute(turn_options)
     response = take_turn.execute(turn_options)
 
     expect(response[:error]).to eq('That tile is already taken, please select another.')

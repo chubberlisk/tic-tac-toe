@@ -5,7 +5,8 @@ require 'spec_helper'
 describe 'Tic Tac Toe' do
   let(:game_gateway) { GameGatewayFake.new }
   let(:start_new_game) { UseCase::StartNewGame.new(game_gateway) }
-  let(:take_turn) { UseCase::TakeTurn.new(game_gateway) }
+  let(:place_marker) { UseCase::PlaceMarker.new }
+  let(:take_turn) { UseCase::TakeTurn.new(game_gateway, place_marker) }
   let(:evaluate_game) { UseCase::EvaluateGame.new(game_gateway) }
   let(:empty_grid) do
     [

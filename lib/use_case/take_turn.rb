@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class UseCase::TakeTurn
-  def initialize(game_gateway)
+  def initialize(game_gateway, place_marker)
     @game_gateway = game_gateway
+    @place_marker = place_marker
   end
 
   def execute(options)
@@ -14,10 +15,9 @@ class UseCase::TakeTurn
       position: options[:position]
     }
 
-    place_marker = UseCase::PlaceMarker.new
     error = nil
     begin
-      updated_grid = place_marker.execute(place_marker_options)
+      updated_grid = @place_marker.execute(place_marker_options)
     rescue UseCase::PlaceMarker::InvalidPositionError
       error = 'Please place your marker inside the grid.'
     rescue UseCase::PlaceMarker::InvalidMoveError

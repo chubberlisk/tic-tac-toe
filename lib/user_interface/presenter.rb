@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserInterface::Presenter
   def initialize(start_new_game:, evaluate_game:, take_turn:, user_interface:)
     @start_new_game = start_new_game

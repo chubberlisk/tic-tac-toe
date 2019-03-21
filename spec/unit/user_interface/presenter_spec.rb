@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe UserInterface::Presenter do
   class CommandLineSpy
     attr_reader :display_turn_calls, :display_turn_arguments, :ask_user_for_position_calls, :display_game_over_arguments
@@ -116,7 +118,7 @@ describe UserInterface::Presenter do
     it 'can start a new game' do
       expect(start_new_game.execute_called?).to eq(true)
       expect(start_new_game.execute_arguments).to eq(
-        { first_player: :ask_user_for_first_player_response }
+        first_player: :ask_user_for_first_player_response
       )
     end
 
@@ -142,7 +144,7 @@ describe UserInterface::Presenter do
     it 'can take a turn' do
       expect(take_turn.execute_calls).to eq(1)
       expect(take_turn.execute_arguments).to contain_exactly(
-        { position: :ask_user_for_position_response }
+        position: :ask_user_for_position_response
       )
     end
 
@@ -170,7 +172,7 @@ describe UserInterface::Presenter do
       expect(take_turn.execute_calls).to eq(2)
       expect(take_turn.execute_arguments).to contain_exactly(
         { position: :ask_user_for_position_response },
-        { position: :ask_user_for_position_response }
+        position: :ask_user_for_position_response
       )
     end
 

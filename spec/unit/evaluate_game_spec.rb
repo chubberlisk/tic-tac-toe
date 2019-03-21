@@ -315,5 +315,19 @@ describe UseCase::EvaluateGame do
 
       expect(evaluate_game_response[:outcome]).to eq(:draw)
     end
+
+    it 'can draw a game for a different grid(example 2)' do
+      game.grid = [
+        %i[o x x],
+        %i[x o o],
+        %i[x o x]
+      ]
+
+      game_gateway.saved_game = game
+
+      evaluate_game_response = evaluate_game.execute
+
+      expect(evaluate_game_response[:outcome]).to eq(:draw)
+    end
   end
 end

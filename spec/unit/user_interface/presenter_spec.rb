@@ -18,7 +18,7 @@ describe UserInterface::Presenter do
       :ask_user_for_first_player_response
     end
 
-    def ask_user_for_first_player_called?
+    def has_asked_user_for_first_player?
       @ask_user_for_first_player_called
     end
 
@@ -38,7 +38,7 @@ describe UserInterface::Presenter do
       @display_game_over_arguments = response
     end
 
-    def display_game_over_called?
+    def has_displayed_game_over?
       @display_game_over_called
     end
   end
@@ -57,7 +57,7 @@ describe UserInterface::Presenter do
       :start_new_game_response
     end
 
-    def execute_called?
+    def has_executed?
       @execute_called
     end
   end
@@ -112,11 +112,11 @@ describe UserInterface::Presenter do
     before { ui_presenter.execute({}) }
 
     it 'can ask the user for the first player' do
-      expect(command_line.ask_user_for_first_player_called?).to eq(true)
+      expect(command_line).to have_asked_user_for_first_player
     end
 
     it 'can start a new game' do
-      expect(start_new_game.execute_called?).to eq(true)
+      expect(start_new_game).to have_executed
       expect(start_new_game.execute_arguments).to eq(
         first_player: :ask_user_for_first_player_response
       )
@@ -198,7 +198,7 @@ describe UserInterface::Presenter do
     end
 
     it 'can display game over' do
-      expect(command_line.display_game_over_called?).to eq(true)
+      expect(command_line).to have_displayed_game_over
       expect(command_line.display_game_over_arguments).to eq(outcome: nil)
     end
   end

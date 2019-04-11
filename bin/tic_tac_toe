@@ -10,7 +10,8 @@ loader.setup
 game_gateway = Gateway::InMemoryGame.new
 start_new_game = UseCase::StartNewGame.new(game_gateway)
 evaluate_game = UseCase::EvaluateGame.new(game_gateway)
-take_turn = UseCase::TakeTurn.new(game_gateway)
+place_marker = UseCase::PlaceMarker.new
+take_turn = UseCase::TakeTurn.new(game_gateway, place_marker)
 command_line = UserInterface::CommandLine.new
 
 user_interface_presenter = UserInterface::Presenter.new(

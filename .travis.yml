@@ -1,4 +1,9 @@
 language: ruby
-script: bundle exec rspec
-rvm:
-  - 2.5.0
+
+jobs:
+  include:
+    - stage: "Run tests"
+      name: "Run tests - unit"
+      script: bundle exec rspec ./spec/unit
+    - script: bundle exec rspec ./spec/acceptance
+      name: "Run tests - acceptance"
